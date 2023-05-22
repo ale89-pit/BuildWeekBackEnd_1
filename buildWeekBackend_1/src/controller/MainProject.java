@@ -3,6 +3,7 @@ package controller;
 import java.time.LocalDate;
 
 import DAO.UtenteDAO;
+import model.Biglietto;
 import model.Utente;
 import utils.JpaUtil;
 
@@ -24,7 +25,7 @@ public class MainProject {
 		System.out.println("modifica data per rinnovo" + u2m.getNome() + u2m.getRinnovoTessera() + u2m.getScadenzaTessera());
 		u.update(u2m);
 //		u2m.setRinnovoTessera(LocalDate.of(2023, 06, 10));
-		
+		Biglietto n1 = new Biglietto();
 		//		
 
 //		u.save(u1);

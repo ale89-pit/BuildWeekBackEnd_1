@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,19 +14,26 @@ import utils.DurataAbb;
 @DiscriminatorValue("biglietti")
 public class Biglietto extends TitoloViaggio {
 	
-	@Column(name= "durata_giornaliera")
-	private  DurataAbb durataGiornaliera = DurataAbb.GIORNALIERO;
+//	@Column(name= "durata_giornaliera")	private  DurataAbb durata = DurataAbb.GIORNALIERO;
 
 	
 	public Biglietto() {
 		super();
+	
 	}
+	public Biglietto(LocalDate dataEmissione, LocalDate dataScadenza, boolean validita,
+			Biglietteria luogoEmissione) {
+		super(dataEmissione, dataScadenza,DurataAbb.GIORNALIERO, validita,
+				 luogoEmissione);
+	
+	}
+	
 
 
-	@Override
-	public String toString() {
-		return "Biglietto [durataGiornaliera=" + durataGiornaliera + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Biglietto [durataGiornaliera=" + durataGiornaliera + "]";
+//	}
 	
 
 
