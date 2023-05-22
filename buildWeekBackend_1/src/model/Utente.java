@@ -42,7 +42,7 @@ public class Utente {
 	private LocalDate dataNascita;
 	
 	@OneToMany
-	@JoinColumn(name = "abbonamenti_acquistati")
+	@JoinColumn(name = "titoli_acquistati")
 	private List<TitoloViaggio> titoliAcquistati = new ArrayList<TitoloViaggio>();
 
 	public Utente() {

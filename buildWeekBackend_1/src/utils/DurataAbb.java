@@ -2,5 +2,6 @@ package utils;
 
 public enum DurataAbb {
 	SETTIMANALI,
-	MENSILI
+	MENSILI,
+	GIORNALIERO
 }

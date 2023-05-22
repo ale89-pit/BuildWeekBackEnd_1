@@ -14,10 +14,10 @@ import utils.JpaUtil;
 
 public class UtenteDAO implements IUtenteDAO {
  private static Logger log=LoggerFactory.getLogger(UtenteDAO.class);
- private static EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+// private static EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 	@Override
 	public void save(Utente u) {
-		
+		 EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			
 			em.getTransaction().begin();
@@ -34,11 +34,12 @@ public class UtenteDAO implements IUtenteDAO {
 	}
 
 	@Override
-	public Utente getByN_tessera(int n_tessera) {
+	public Utente getByN_tessera(Integer n_tessera) {
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			em.getTransaction().begin();
+//			em.getTransaction().begin();
 			Utente u =  em.find(Utente.class, n_tessera);
-			em.getTransaction().commit();
+//			em.getTransaction().commit();
 			return u;
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -51,6 +52,7 @@ public class UtenteDAO implements IUtenteDAO {
 
 	@Override
 	public void delete(Utente u) {
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.remove(u);
@@ -67,6 +69,7 @@ public class UtenteDAO implements IUtenteDAO {
 
 	@Override
 	public void update(Utente u) {
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.merge(u);
@@ -83,6 +86,7 @@ public class UtenteDAO implements IUtenteDAO {
 
 	@Override
 	public List<Utente> getAllUsers() {
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			Query q = em.createQuery("SELECT u FROM Utente u");
 			return q.getResultList();
