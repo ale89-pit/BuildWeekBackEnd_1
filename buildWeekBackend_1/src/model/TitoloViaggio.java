@@ -41,9 +41,6 @@ public abstract class TitoloViaggio {
 	@Enumerated(EnumType.STRING)
 	private DurataAbb durata;
 	
-	@Column(nullable = false)
-	private boolean validita;
-	
 	@ManyToOne
 	@JoinColumn(name = "luogo_emissione", nullable = false)
 	private Biglietteria luogoEmissione;
@@ -53,14 +50,26 @@ public abstract class TitoloViaggio {
 	public TitoloViaggio() {
 		super();
 	}
+	
+	public TitoloViaggio(DurataAbb durata, Biglietteria luogoEmissione) {
+		super();
+		this.dataEmissione = LocalDate.now();
+		this.durata = durata;
+		this.dataScadenza = 
+				this.durata.equals(DurataAbb.GIORNALIERO) ? LocalDate.now().plusDays(1) 
+				: this.durata.equals(DurataAbb.SETTIMANALI) ? LocalDate.now().plusDays(7) 
+				: LocalDate.now().plusMonths(1);
+		this.luogoEmissione = luogoEmissione;
+	}
 
-	public TitoloViaggio(LocalDate dataEmissione, LocalDate dataScadenza, DurataAbb durata, boolean validita,
-			Biglietteria luogoEmissione) {
+	public TitoloViaggio(LocalDate dataEmissione, DurataAbb durata, Biglietteria luogoEmissione) {
 		super();
 		this.dataEmissione = dataEmissione;
-		this.dataScadenza = dataScadenza;
 		this.durata = durata;
-		this.validita = validita;
+		this.dataScadenza = 
+				this.durata.equals(DurataAbb.GIORNALIERO) ? this.dataEmissione.plusDays(1) 
+				: this.durata.equals(DurataAbb.SETTIMANALI) ? this.dataEmissione.plusDays(7) 
+				: this.dataEmissione.plusMonths(1);
 		this.luogoEmissione = luogoEmissione;
 	}
 
@@ -92,14 +101,6 @@ public abstract class TitoloViaggio {
 		this.durata = durata;
 	}
 
-	public boolean isValidita() {
-		return validita;
-	}
-
-	public void setValidita(boolean validita) {
-		this.validita = validita;
-	}
-
 	public Biglietteria getLuogoEmissione() {
 		return luogoEmissione;
 	}
@@ -107,11 +108,16 @@ public abstract class TitoloViaggio {
 	public void setLuogoEmissione(Biglietteria luogoEmissione) {
 		this.luogoEmissione = luogoEmissione;
 	}
+	
+	public boolean isValido() {
+		boolean validita = (this.dataScadenza.compareTo(LocalDate.now()) > 0) ? true : false;
+		return validita;
+	}
 
 	@Override
 	public String toString() {
 		return "TitoloViaggio [codice=" + codice + ", dataEmissione=" + dataEmissione + ", dataScadenza=" + dataScadenza
-				+ ", durata=" + durata + ", validita=" + validita + ", luogoEmissione=" + luogoEmissione + "]";
+				+ ", durata=" + durata + ", luogoEmissione=" + luogoEmissione + "]";
 	}
 	
 	

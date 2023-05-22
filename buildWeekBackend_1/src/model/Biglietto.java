@@ -21,11 +21,9 @@ public class Biglietto extends TitoloViaggio {
 		super();
 	
 	}
-	public Biglietto(LocalDate dataEmissione, LocalDate dataScadenza, boolean validita,
+	public Biglietto(LocalDate dataEmissione,
 			Biglietteria luogoEmissione) {
-		super(dataEmissione, dataScadenza,DurataAbb.GIORNALIERO, validita,
-				 luogoEmissione);
-	
+		super(dataEmissione, DurataAbb.GIORNALIERO, luogoEmissione);
 	}
 	
 
