@@ -1,10 +1,9 @@
 package model;
 
-import java.time.LocalDate; 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,19 +25,107 @@ public class Utente {
 	
 	@Column(name = "emissione_tessera", nullable = false)
 	private LocalDate emissioneTessera;
+	
 	@Column(name = "rinnovo_tessera")
 	private LocalDate rinnovoTessera;
+	
 	@Column(name = "scadenza_tessera", nullable = false)
 	private LocalDate scadenzaTessera;
+	
 	@Column(nullable = false)
 	private String nome;
+	
 	@Column(nullable = false)
 	private String cognome;
+	
 	@Column(nullable = false)
 	private LocalDate dataNascita;
 	
 	@OneToMany
-	@JoinColumn(name = "titoli_acquistati")
-	private List<TitoloViaggio> titoliAcquistati;
+	@JoinColumn(name = "abbonamenti_acquistati")
+	private List<Abbonamento> abbonamentiAcquistati = new ArrayList<Abbonamento>();
 
+	public Utente() {
+		super();
+	}
+
+	public Utente(LocalDate emissioneTessera, LocalDate rinnovoTessera, LocalDate scadenzaTessera, String nome,
+			String cognome, LocalDate dataNascita) {
+		super();
+		this.emissioneTessera = emissioneTessera;
+		this.rinnovoTessera = rinnovoTessera;
+		this.scadenzaTessera = scadenzaTessera;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dataNascita = dataNascita;
+	}
+
+	public LocalDate getEmissioneTessera() {
+		return emissioneTessera;
+	}
+
+	public void setEmissioneTessera(LocalDate emissioneTessera) {
+		this.emissioneTessera = emissioneTessera;
+	}
+
+	public LocalDate getRinnovoTessera() {
+		return rinnovoTessera;
+	}
+
+	public void setRinnovoTessera(LocalDate rinnovoTessera) {
+		this.rinnovoTessera = rinnovoTessera;
+	}
+
+	public LocalDate getScadenzaTessera() {
+		return scadenzaTessera;
+	}
+
+	public void setScadenzaTessera(LocalDate scadenzaTessera) {
+		this.scadenzaTessera = scadenzaTessera;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+	public LocalDate getDataNascita() {
+		return dataNascita;
+	}
+
+	public void setDataNascita(LocalDate dataNascita) {
+		this.dataNascita = dataNascita;
+	}
+
+	public List<Abbonamento> getAbbonamentiAcquistati() {
+		return abbonamentiAcquistati;
+	}
+
+	public void setAbbonamentiAcquistati(List<Abbonamento> abbonamentiAcquistati) {
+		this.abbonamentiAcquistati = abbonamentiAcquistati;
+	}
+
+	public Integer getTessera() {
+		return tessera;
+	}
+
+	@Override
+	public String toString() {
+		return "Utente [tessera=" + tessera + ", emissioneTessera=" + emissioneTessera + ", rinnovoTessera="
+				+ rinnovoTessera + ", scadenzaTessera=" + scadenzaTessera + ", nome=" + nome + ", cognome=" + cognome
+				+ ", dataNascita=" + dataNascita + ", abbonamentiAcquistati=" + abbonamentiAcquistati + "]";
+	}
+
+	
 }
