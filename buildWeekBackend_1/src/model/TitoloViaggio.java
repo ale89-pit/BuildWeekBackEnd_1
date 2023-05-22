@@ -3,6 +3,8 @@ package model;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -19,7 +22,8 @@ import utils.DurataAbb;
 
 @Entity
 @Table(name="titoli_viaggio")
-@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name="tipo_biglietto", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class TitoloViaggio {
 	
 	@Id
@@ -41,7 +45,7 @@ public abstract class TitoloViaggio {
 	private boolean validita;
 	
 	@ManyToOne
-	@Column(name = "luogo_emissione", nullable = false)
+	@JoinColumn(name = "luogo_emissione", nullable = false)
 	private Biglietteria luogoEmissione;
 
 	

@@ -2,7 +2,7 @@ package model;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 public class Biglietto extends TitoloViaggio {
 	
 	@ManyToOne
-	@JoinTable(name = "titoli_acquistati")
+	@JoinColumn(name = "titoli_acquistati")
 	private Utente titolare;
 
 	

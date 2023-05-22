@@ -27,7 +27,7 @@ public class Utente {
 	private LocalDate emissioneTessera;
 	
 	@Column(name = "rinnovo_tessera")
-	private LocalDate rinnovoTessera;
+	private LocalDate rinnovoTessera = null;
 	
 	@Column(name = "scadenza_tessera", nullable = false)
 	private LocalDate scadenzaTessera;
@@ -43,18 +43,27 @@ public class Utente {
 	
 	@OneToMany
 	@JoinColumn(name = "abbonamenti_acquistati")
-	private List<Abbonamento> abbonamentiAcquistati = new ArrayList<Abbonamento>();
+	private List<TitoloViaggio> titoliAcquistati = new ArrayList<TitoloViaggio>();
 
 	public Utente() {
 		super();
 	}
 
-	public Utente(LocalDate emissioneTessera, LocalDate rinnovoTessera, LocalDate scadenzaTessera, String nome,
+	public Utente(String nome,
+			String cognome, LocalDate dataNascita) {
+		super();
+		this.emissioneTessera = LocalDate.now();
+		this.scadenzaTessera = rinnovoTessera != null ? this.rinnovoTessera.plusYears(1) : this.emissioneTessera.plusYears(1);
+		this.nome = nome;
+		this.cognome = cognome;
+		this.dataNascita = dataNascita;
+	}
+	
+	public Utente(LocalDate emissioneTessera, String nome,
 			String cognome, LocalDate dataNascita) {
 		super();
 		this.emissioneTessera = emissioneTessera;
-		this.rinnovoTessera = rinnovoTessera;
-		this.scadenzaTessera = scadenzaTessera;
+		this.scadenzaTessera = this.emissioneTessera.plusYears(1);
 		this.nome = nome;
 		this.cognome = cognome;
 		this.dataNascita = dataNascita;
@@ -74,14 +83,11 @@ public class Utente {
 
 	public void setRinnovoTessera(LocalDate rinnovoTessera) {
 		this.rinnovoTessera = rinnovoTessera;
+		this.scadenzaTessera= rinnovoTessera.plusYears(1);
 	}
 
 	public LocalDate getScadenzaTessera() {
 		return scadenzaTessera;
-	}
-
-	public void setScadenzaTessera(LocalDate scadenzaTessera) {
-		this.scadenzaTessera = scadenzaTessera;
 	}
 
 	public String getNome() {
@@ -108,12 +114,12 @@ public class Utente {
 		this.dataNascita = dataNascita;
 	}
 
-	public List<Abbonamento> getAbbonamentiAcquistati() {
-		return abbonamentiAcquistati;
+	public List<TitoloViaggio> getAbbonamentiAcquistati() {
+		return titoliAcquistati;
 	}
 
-	public void setAbbonamentiAcquistati(List<Abbonamento> abbonamentiAcquistati) {
-		this.abbonamentiAcquistati = abbonamentiAcquistati;
+	public void setAbbonamentiAcquistati(List<TitoloViaggio> abbonamentiAcquistati) {
+		this.titoliAcquistati = abbonamentiAcquistati;
 	}
 
 	public Integer getTessera() {
@@ -124,7 +130,7 @@ public class Utente {
 	public String toString() {
 		return "Utente [tessera=" + tessera + ", emissioneTessera=" + emissioneTessera + ", rinnovoTessera="
 				+ rinnovoTessera + ", scadenzaTessera=" + scadenzaTessera + ", nome=" + nome + ", cognome=" + cognome
-				+ ", dataNascita=" + dataNascita + ", abbonamentiAcquistati=" + abbonamentiAcquistati + "]";
+				+ ", dataNascita=" + dataNascita + ", titoliAcquistati=" + titoliAcquistati + "]";
 	}
 
 	
