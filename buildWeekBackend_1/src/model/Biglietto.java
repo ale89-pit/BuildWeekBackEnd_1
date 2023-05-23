@@ -21,6 +21,10 @@ public class Biglietto extends TitoloViaggio {
 		super();
 	
 	}
+	public Biglietto(Biglietteria luogoEmissione) {
+		super(LocalDate.now(), DurataAbb.GIORNALIERO, luogoEmissione);
+	}
+	
 	public Biglietto(LocalDate dataEmissione,
 			Biglietteria luogoEmissione) {
 		super(dataEmissione, DurataAbb.GIORNALIERO, luogoEmissione);

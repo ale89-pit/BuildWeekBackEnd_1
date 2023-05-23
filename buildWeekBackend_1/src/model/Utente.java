@@ -41,9 +41,9 @@ public class Utente {
 	@Column(nullable = false)
 	private LocalDate dataNascita;
 	
-	@OneToMany
-	@JoinColumn(name = "titoli_acquistati")
-	private List<Abbonamento> titoliAcquistati = new ArrayList<Abbonamento>();
+	@OneToMany(mappedBy = "titolare")
+	//@JoinColumn(name = "titoli_acquistati")
+	private List<Abbonamento> titoliAcquistati;
 
 	public Utente() {
 		super();

@@ -2,12 +2,14 @@ package model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +43,8 @@ public abstract class TitoloViaggio {
 	@Enumerated(EnumType.STRING)
 	private DurataAbb durata;
 	
-	@ManyToOne
-	@JoinColumn(name = "biglietteria_emissione", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "biglietteria_emissione")
 	private Biglietteria biglietteriaEmissione;
 
 	

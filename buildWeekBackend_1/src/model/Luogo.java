@@ -28,8 +28,6 @@ public class Luogo {
 	@Column(nullable=false, unique = true)
 	private String nome;
 	
-	@OneToMany(mappedBy = "luogo")
-	private List<Biglietteria> puntiVendita = new ArrayList<Biglietteria>();
 
 	public Luogo() {
 		super();
@@ -66,13 +64,7 @@ public class Luogo {
 		this.nome = nome;
 	}
 
-	public List<Biglietteria> getPuntiVendita() {
-		return puntiVendita;
-	}
-
-	public void setPuntiVendita(List<Biglietteria> puntiVendita) {
-		this.puntiVendita = puntiVendita;
-	}
+	
 
 	public Integer getId() {
 		return id;
@@ -81,7 +73,7 @@ public class Luogo {
 	@Override
 	public String toString() {
 		return "Luogo [id=" + id + ", provincia=" + provincia + ", citta=" + citta + ", nome=" + nome
-				+ ", puntiVendita=" + puntiVendita + "]";
+				+ "]";
 	}
 	
 	
