@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +44,7 @@ public class Utente {
 	
 	@OneToMany(mappedBy = "titolare")
 	//@JoinColumn(name = "titoli_acquistati")
-	private List<Abbonamento> titoliAcquistati;
+	private List<Abbonamento> abbonamentiAcquistati;
 
 	public Utente() {
 		super();
@@ -115,11 +116,11 @@ public class Utente {
 	}
 
 	public List<Abbonamento> getAbbonamentiAcquistati() {
-		return titoliAcquistati;
+		return abbonamentiAcquistati;
 	}
 
 	public void setAbbonamentiAcquistati(List<Abbonamento> abbonamentiAcquistati) {
-		this.titoliAcquistati = abbonamentiAcquistati;
+		this.abbonamentiAcquistati = abbonamentiAcquistati;
 	}
 
 	public Integer getTessera() {
@@ -130,7 +131,7 @@ public class Utente {
 	public String toString() {
 		return "Utente [tessera=" + tessera + ", emissioneTessera=" + emissioneTessera + ", rinnovoTessera="
 				+ rinnovoTessera + ", scadenzaTessera=" + scadenzaTessera + ", nome=" + nome + ", cognome=" + cognome
-				+ ", dataNascita=" + dataNascita + ", titoliAcquistati=" + titoliAcquistati + "]";
+				+ ", dataNascita=" + dataNascita + ", titoliAcquistati=" + abbonamentiAcquistati.size() + "]";
 	}
 
 	

@@ -27,44 +27,50 @@ public class MainProject {
 	public static void main(String[] args) {
 	JpaUtil.getEntityManagerFactory().createEntityManager();
 
-		UtenteDAO u = new UtenteDAO();
-		TitoloViaggioDAO t = new TitoloViaggioDAO();
-		BiglietteriaDAO bg = new BiglietteriaDAO();
-		LuogoDAO lg = new LuogoDAO();
+		UtenteDAO DAO_utente = new UtenteDAO();
+		TitoloViaggioDAO DAO_titolo = new TitoloViaggioDAO();
+		BiglietteriaDAO DAO_biglietteria = new BiglietteriaDAO();
+		LuogoDAO DAO_luogo = new LuogoDAO();
 	
 		Utente u1 = new Utente("Emanuele", "Syrbe", LocalDate.of(1997, 1, 27));
-		u.save(u1);
+		DAO_utente.save(u1);
 		
-//		Utente u2 = new Utente(LocalDate.of(2021, 5,22), "Alessio", "Pitorri", LocalDate.of(1989, 4, 27));		u.save(u2);
-//		Utente u2m = u.getByN_tessera(5003);
-//		u2m.setRinnovoTessera(LocalDate.of(2023, 6, 10));
-//		System.out.println("modifica data per rinnovo" + u2m.getNome() + u2m.getRinnovoTessera() + u2m.getScadenzaTessera());
-//		u.update(u2m);
+		Utente u2 = new Utente(LocalDate.of(2021, 5,22), "Alessio", "Pitorri", LocalDate.of(1989, 4, 27));		
+		DAO_utente.save(u2);
+		
+//		Utente u2mod = DAO_utente.getByN_tessera(5007).setRinnovoTessera(LocalDate.of(2023, 6, 10));
+//		System.out.println("Modifica data per rinnovo " + u2mod.getNome() + u2mod.getRinnovoTessera() + u2mod.getScadenzaTessera());
+//		DAO_utente.update(u2mod);
 
-	Luogo l1=new Luogo("Roma","Roma","Termini");
-//		Luogo luogo=lg.getById(1);
-//		System.out.println(luogo);
-		lg.save(l1);
+		Luogo l1=new Luogo("Roma","Roma","Termini");
+//		Luogo luogo = DAO_luogo.getById(1);
+		System.out.println(l1);
+		DAO_luogo.save(l1);
 		
-		Biglietteria r1=new Rivenditore(TipoNegozio.EDICOLA, l1);
-		bg.save(r1);
-//		
-//	Biglietteria biglietteria= bg.getById(1003);
-//
-// System.out.println(biglietteria);
-//	biglietteria.getTitoliEmessi().forEach(b-> System.out.println(b));;
-//	TitoloViaggio t1 =new Biglietto(LocalDate.of(2023, 3, 15), biglietteria);
-//		t.save(t1);
+		Biglietteria r1 = new Rivenditore(TipoNegozio.EDICOLA, l1);
+		DAO_biglietteria.save(r1);
+		
+//		Biglietteria biglietteria= DAO_biglietteria.getById(1003);
+ 		System.out.println(r1);
+		
+//		biglietteria.getTitoliEmessi().forEach(b-> System.out.println(b));;
+		TitoloViaggio b1 =new Biglietto(LocalDate.of(2023, 3, 15), r1);
+		DAO_titolo.save(b1);
 
 		TitoloViaggio a2 = new Abbonamento(DurataAbb.MENSILI, r1, u1);
-		t.save(a2);
+		DAO_titolo.save(a2);
 		
 //		TitoloViaggio a3 = new Abbonamento(DurataAbb.SETTIMANALI, biglietteria, u2m);
-//	emettiTitolo(a3);
+//		DAO_titolo.save(a3);
 		
-//	biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, u2m.getTessera());
-	//	biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, null);
-	}
+//		biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, u2mod.getTessera());
+//		biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, null);
+		
+		
+		//u1.getAbbonamentiAcquistati().forEach(a->System.out.println(a));
+		Utente u5 = DAO_utente.getByN_tessera(5000);
+		System.out.println(u5);
+;	}
 	
 	
 }
