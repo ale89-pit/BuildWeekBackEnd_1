@@ -14,9 +14,6 @@ import utils.DurataAbb;
 @DiscriminatorValue("biglietti")
 public class Biglietto extends TitoloViaggio {
 	
-//	@Column(name= "durata_giornaliera")	private  DurataAbb durata = DurataAbb.GIORNALIERO;
-
-	
 	public Biglietto() {
 		super();
 	
@@ -29,19 +26,5 @@ public class Biglietto extends TitoloViaggio {
 			Biglietteria luogoEmissione) {
 		super(dataEmissione, DurataAbb.GIORNALIERO, luogoEmissione);
 	}
-	
 
-
-//	@Override
-//	public String toString() {
-//		return "Biglietto [durataGiornaliera=" + durataGiornaliera + "]";
-//	}
-	
-
-
-	
-
-	
-
-	
 }

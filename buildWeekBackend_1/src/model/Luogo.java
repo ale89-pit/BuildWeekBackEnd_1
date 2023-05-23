@@ -28,7 +28,6 @@ public class Luogo {
 	@Column(nullable=false, unique = true)
 	private String nome;
 	
-
 	public Luogo() {
 		super();
 	}
@@ -72,8 +71,7 @@ public class Luogo {
 
 	@Override
 	public String toString() {
-		return "Luogo [id=" + id + ", provincia=" + provincia + ", citta=" + citta + ", nome=" + nome
-				+ "]";
+		return "Luogo [id=" + id + ", provincia=" + provincia + ", citta=" + citta + ", nome=" + nome + "]";
 	}
 	
 	

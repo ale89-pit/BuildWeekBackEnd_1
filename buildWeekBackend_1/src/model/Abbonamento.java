@@ -3,7 +3,6 @@ package model;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import utils.DurataAbb;
@@ -12,7 +11,7 @@ import utils.DurataAbb;
 @DiscriminatorValue("abbonamenti")
 public class Abbonamento extends TitoloViaggio {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Utente titolare;
 
 	

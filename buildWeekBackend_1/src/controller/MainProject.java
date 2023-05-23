@@ -25,7 +25,7 @@ public class MainProject {
 
 	
 	public static void main(String[] args) {
-	JpaUtil.getEntityManagerFactory().createEntityManager();
+		JpaUtil.getEntityManagerFactory().createEntityManager();
 
 		UtenteDAO DAO_utente = new UtenteDAO();
 		TitoloViaggioDAO DAO_titolo = new TitoloViaggioDAO();
@@ -43,33 +43,32 @@ public class MainProject {
 //		DAO_utente.update(u2mod);
 
 		Luogo l1=new Luogo("Roma","Roma","Termini");
-//		Luogo luogo = DAO_luogo.getById(1);
 		System.out.println(l1);
 		DAO_luogo.save(l1);
 		
 		Biglietteria r1 = new Rivenditore(TipoNegozio.EDICOLA, l1);
 		DAO_biglietteria.save(r1);
 		
-//		Biglietteria biglietteria= DAO_biglietteria.getById(1003);
  		System.out.println(r1);
 		
-//		biglietteria.getTitoliEmessi().forEach(b-> System.out.println(b));;
 		TitoloViaggio b1 =new Biglietto(LocalDate.of(2023, 3, 15), r1);
 		DAO_titolo.save(b1);
 
 		TitoloViaggio a2 = new Abbonamento(DurataAbb.MENSILI, r1, u1);
 		DAO_titolo.save(a2);
 		
-//		TitoloViaggio a3 = new Abbonamento(DurataAbb.SETTIMANALI, biglietteria, u2m);
-//		DAO_titolo.save(a3);
+		TitoloViaggio a3 = new Abbonamento(DurataAbb.SETTIMANALI, r1, u1);
+		DAO_titolo.save(a3);
 		
 //		biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, u2mod.getTessera());
 //		biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, null);
 		
-		
-		//u1.getAbbonamentiAcquistati().forEach(a->System.out.println(a));
 		Utente u5 = DAO_utente.getByN_tessera(5000);
 		System.out.println(u5);
+		u5.getAbbonamentiAcquistati().forEach(a -> System.out.println(a));
+		Biglietteria bigl1 = DAO_biglietteria.getById(1000);
+		bigl1.getTitoliEmessi().forEach(a -> System.out.println(a)); 
+		
 ;	}
 	
 	

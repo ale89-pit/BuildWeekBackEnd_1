@@ -38,16 +38,13 @@ public class Biglietteria {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_biglietteria")
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Luogo luogo;
 	
-	
-	@OneToMany(mappedBy = "biglietteriaEmissione")
-	//@Column(nullable=false)
-	private List<TitoloViaggio> titoliEmessi;
+	@OneToMany(mappedBy = "biglietteriaEmissione", fetch = FetchType.EAGER)
+	private List<TitoloViaggio> titoliEmessi = new ArrayList<TitoloViaggio>();
 
 
-	
 	public Biglietteria() {
 		super();
 	}
@@ -80,7 +77,7 @@ public class Biglietteria {
 
 	@Override
 	public String toString() {
-		return "Biglietteria [id=" + id + ", luogo=" + luogo + ", titoliEmessi=" + titoliEmessi + "]";
+		return "Biglietteria [id=" + id + ", luogo=" + luogo + ", titoliEmessi=" + titoliEmessi.size() + "]";
 	}
 	
 	public TitoloViaggio getUltimoTitolo() {
@@ -90,57 +87,32 @@ public class Biglietteria {
 		return ultimoTitolo;
 	}
 	
-	public void emettiTitolo(DurataAbb durata,  Integer numeroTessera) {
+	public void emettiTitolo(DurataAbb durata, Integer numeroTessera ) {
 		
 		if (this.id != null) {
-			Utente titolare = new UtenteDAO().getByN_tessera(numeroTessera);
-			System.out.println("******************************************");
-			System.out.println(titolare);
-			System.out.println("******************************************");
+			
 			Biglietteria biglietteriaEmissione = new BiglietteriaDAO().getById(this.id);
-			System.out.println("******************************************");
-			System.out.println(biglietteriaEmissione);
-			System.out.println("******************************************");
 			TitoloViaggio t;
 			
 			if (durata!= DurataAbb.GIORNALIERO) {
+				if (numeroTessera != null) {
+				Utente titolare = new UtenteDAO().getByN_tessera(numeroTessera);
 				t= new Abbonamento(durata, biglietteriaEmissione, titolare);
+				} else {
+					System.out.println("Per acquistare un abbonamento, inserisci il tuo numero tessera!");
+				}
 			}
+			
 			else {
 				t= new Biglietto(biglietteriaEmissione);
 			}
 			
-		new TitoloViaggioDAO().save(t);
-		
-	//	TitoloViaggio lastSaved = getUltimoTitolo();
-	//	System.out.println(lastSaved);
-		
-		TitoloViaggio ultimoTitolo = new TitoloViaggioDAO().getAllTitoli().get(new TitoloViaggioDAO().getAllTitoli().size() - 1);
-		System.out.println(ultimoTitolo);
-		
-		
-//		if(t instanceof Abbonamento) {
-//			titolare = ((Abbonamento) lastSaved).getTitolare();
-//			List<Abbonamento> abbAcquistati = titolare.getAbbonamentiAcquistati();
-//			abbAcquistati.add((Abbonamento)lastSaved);
-//			titolare.setAbbonamentiAcquistati(abbAcquistati);
-//			new UtenteDAO().update(titolare);
-//			System.out.print("TITOLARE OK!!!!!!!!!");
-//		} else {
-//			lastSaved = getUltimoTitolo();
-//		}
-//		biglietteriaEmissione = lastSaved.getLuogoEmissione();
-//		List<TitoloViaggio> titoliEmessi = biglietteriaEmissione.getTitoliEmessi();
-//		titoliEmessi.add(lastSaved);
-//		biglietteriaEmissione.setTitoliEmessi(titoliEmessi);
-//		new BiglietteriaDAO().update(biglietteriaEmissione);
-//		System.out.print("BIGLIETTERIA OK!!!!!!!!!");
-
-	}
+			new TitoloViaggioDAO().save(t);
+		}
 		else {
 			System.out.println("Id non presente!");
 		}
-		}
+	}
 	
 	
 }

@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -42,9 +41,8 @@ public class Utente {
 	@Column(nullable = false)
 	private LocalDate dataNascita;
 	
-	@OneToMany(mappedBy = "titolare")
-	//@JoinColumn(name = "titoli_acquistati")
-	private List<Abbonamento> abbonamentiAcquistati;
+	@OneToMany(mappedBy = "titolare", fetch = FetchType.EAGER)
+	private List<Abbonamento> abbonamentiAcquistati  = new ArrayList<Abbonamento>();
 
 	public Utente() {
 		super();

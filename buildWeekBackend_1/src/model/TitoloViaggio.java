@@ -43,8 +43,7 @@ public abstract class TitoloViaggio {
 	@Enumerated(EnumType.STRING)
 	private DurataAbb durata;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	//@JoinColumn(name = "biglietteria_emissione")
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Biglietteria biglietteriaEmissione;
 
 	

@@ -16,9 +16,15 @@ public class Distributore extends Biglietteria {
 
 	public Distributore() {
 		super();
+		this.inServizio = true;
+	}
+	
+	public Distributore(Luogo luogo) {
+		super(luogo);
+		this.inServizio = true;
 	}
 
-	public Distributore(boolean inServizio,Luogo luogo) {
+	public Distributore(boolean inServizio, Luogo luogo) {
 		super(luogo);
 		this.inServizio = inServizio;
 	}
