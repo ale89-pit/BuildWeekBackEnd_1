@@ -49,6 +49,23 @@ public class BiglietteriaDAO implements IBiglietteriaDAO {
 		}
 		return null;
 	}
+	
+	@Override
+	public void update(Biglietteria b) {
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(b);
+			em.getTransaction().commit();
+			log.info("Biglietteria aggiornata corretamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			log.error("Errore nella modifica della biglietteria");
+		} finally {
+			em.close();
+		}
+		
+	}
 
 	@Override
 	public void delete(Biglietteria bi) {

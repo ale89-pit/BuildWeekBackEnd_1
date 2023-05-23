@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import utils.DurataAbb;
+
 @Entity
 @DiscriminatorValue("abbonamenti")
 public class Abbonamento extends TitoloViaggio {
@@ -20,6 +22,11 @@ public class Abbonamento extends TitoloViaggio {
 
 	public Abbonamento(Utente titolare) {
 		super();
+		this.titolare = titolare;
+	}
+	
+	public Abbonamento(DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
+		super(durata, luogoEmissione);
 		this.titolare = titolare;
 	}
 

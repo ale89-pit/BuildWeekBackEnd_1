@@ -34,7 +34,7 @@ public class Biglietteria {
 	private Luogo luogo;
 	
 	
-	@OneToMany(mappedBy = "luogoEmissione")
+	@OneToMany(mappedBy = "biglietteriaEmissione")
 	@Column(nullable=false)
 	private List<TitoloViaggio> titoliEmessi = new ArrayList<TitoloViaggio>();
 

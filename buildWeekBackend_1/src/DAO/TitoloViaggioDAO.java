@@ -1,5 +1,6 @@
 package DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,34 +10,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import InterfaceDAO.ITitoloViaggioDAO;
+import model.Abbonamento;
 import model.TitoloViaggio;
 import model.Utente;
 import utils.JpaUtil;
 
 public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 	private static Logger log=LoggerFactory.getLogger(TitoloViaggioDAO.class);
+		
 		@Override
-		public void save(TitoloViaggio u) {
-			 EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		public void save(TitoloViaggio t) {
+			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 			try {
-				
 				em.getTransaction().begin();
-				em.persist(u);
-				em.getTransaction().commit();
+				em.persist(t);
+				em.getTransaction().commit();				
 				log.info("TitoloViaggio salvato correttamente");
 			}catch(Exception ex) {
 				em.getTransaction().rollback();
 				log.error(ex.getMessage());
 			}finally{
 				em.close();
-			}
-}
+			}	
+		}
+		
 		@Override
-		public Utente getByCodice(Integer codice) {
+		public TitoloViaggio getByCodice(Integer codice) {
 			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 			try {
 //				em.getTransaction().begin();
-				Utente u =  em.find(Utente.class, codice);
+				TitoloViaggio u =  em.find(TitoloViaggio.class, codice);
 //				em.getTransaction().commit();
 				return u;
 			} catch (Exception e) {
@@ -47,6 +50,7 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 			}
 			return null;
 		}
+		
 		@Override
 		public void delete(TitoloViaggio ti) {
 			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
@@ -64,7 +68,7 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 			
 		}
 		@Override
-		public List<TitoloViaggio> getAllUsers() {
+		public List<TitoloViaggio> getAllTitoli() {
 			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 			try {
 				Query q = em.createQuery("SELECT u FROM TitoloViaggio u");

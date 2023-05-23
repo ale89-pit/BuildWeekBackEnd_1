@@ -7,7 +7,7 @@ import model.Utente;
 
 public interface ITitoloViaggioDAO {
 	public void save(TitoloViaggio ti);
-	public Utente getByCodice(Integer codice);
+	public TitoloViaggio getByCodice(Integer codice);
 	public void delete(TitoloViaggio ti);
-	public List<TitoloViaggio>  getAllUsers();
+	public List<TitoloViaggio>  getAllTitoli();
 }

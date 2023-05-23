@@ -42,8 +42,8 @@ public abstract class TitoloViaggio {
 	private DurataAbb durata;
 	
 	@ManyToOne
-	@JoinColumn(name = "luogo_emissione", nullable = false)
-	private Biglietteria luogoEmissione;
+	@JoinColumn(name = "biglietteria_emissione", nullable = false)
+	private Biglietteria biglietteriaEmissione;
 
 	
 	
@@ -59,7 +59,7 @@ public abstract class TitoloViaggio {
 				this.durata.equals(DurataAbb.GIORNALIERO) ? LocalDate.now().plusDays(1) 
 				: this.durata.equals(DurataAbb.SETTIMANALI) ? LocalDate.now().plusDays(7) 
 				: LocalDate.now().plusMonths(1);
-		this.luogoEmissione = luogoEmissione;
+		this.biglietteriaEmissione = luogoEmissione;
 	}
 
 	public TitoloViaggio(LocalDate dataEmissione, DurataAbb durata, Biglietteria luogoEmissione) {
@@ -70,7 +70,7 @@ public abstract class TitoloViaggio {
 				this.durata.equals(DurataAbb.GIORNALIERO) ? this.dataEmissione.plusDays(1) 
 				: this.durata.equals(DurataAbb.SETTIMANALI) ? this.dataEmissione.plusDays(7) 
 				: this.dataEmissione.plusMonths(1);
-		this.luogoEmissione = luogoEmissione;
+		this.biglietteriaEmissione = luogoEmissione;
 	}
 
 	public Integer getCodice() {
@@ -102,11 +102,11 @@ public abstract class TitoloViaggio {
 	}
 
 	public Biglietteria getLuogoEmissione() {
-		return luogoEmissione;
+		return biglietteriaEmissione;
 	}
 
 	public void setLuogoEmissione(Biglietteria luogoEmissione) {
-		this.luogoEmissione = luogoEmissione;
+		this.biglietteriaEmissione = luogoEmissione;
 	}
 	
 	public boolean isValido() {
@@ -117,7 +117,7 @@ public abstract class TitoloViaggio {
 	@Override
 	public String toString() {
 		return "TitoloViaggio [codice=" + codice + ", dataEmissione=" + dataEmissione + ", dataScadenza=" + dataScadenza
-				+ ", durata=" + durata + ", luogoEmissione=" + luogoEmissione + "]";
+				+ ", durata=" + durata + ", luogoEmissione=" + biglietteriaEmissione + "]";
 	}
 	
 	

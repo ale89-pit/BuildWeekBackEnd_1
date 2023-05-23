@@ -43,7 +43,7 @@ public class Utente {
 	
 	@OneToMany
 	@JoinColumn(name = "titoli_acquistati")
-	private List<TitoloViaggio> titoliAcquistati = new ArrayList<TitoloViaggio>();
+	private List<Abbonamento> titoliAcquistati = new ArrayList<Abbonamento>();
 
 	public Utente() {
 		super();
@@ -114,11 +114,11 @@ public class Utente {
 		this.dataNascita = dataNascita;
 	}
 
-	public List<TitoloViaggio> getAbbonamentiAcquistati() {
+	public List<Abbonamento> getAbbonamentiAcquistati() {
 		return titoliAcquistati;
 	}
 
-	public void setAbbonamentiAcquistati(List<TitoloViaggio> abbonamentiAcquistati) {
+	public void setAbbonamentiAcquistati(List<Abbonamento> abbonamentiAcquistati) {
 		this.titoliAcquistati = abbonamentiAcquistati;
 	}
 
