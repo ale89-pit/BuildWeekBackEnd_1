@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 public class Abbonamento extends TitoloViaggio {
 	
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	private Utente titolare;
 
 	

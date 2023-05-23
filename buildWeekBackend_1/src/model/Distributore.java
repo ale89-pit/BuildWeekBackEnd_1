@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,15 +11,15 @@ import javax.persistence.Entity;
 public class Distributore extends Biglietteria {
 	
 	
-	@Column(nullable=false)
+	@Column
 	private boolean inServizio;
 
 	public Distributore() {
 		super();
 	}
 
-	public Distributore(boolean inServizio) {
-		super();
+	public Distributore(boolean inServizio,Luogo luogo) {
+		super(luogo);
 		this.inServizio = inServizio;
 	}
 

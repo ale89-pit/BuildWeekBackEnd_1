@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,15 +17,15 @@ public class Rivenditore extends Biglietteria {
 	
 	@Enumerated(EnumType.STRING)
 	private TipoNegozio tipologia;
-
+	
 	
 	public Rivenditore() {
 		super();
 	}
 
 
-	public Rivenditore(TipoNegozio tipologia) {
-		super();
+	public Rivenditore(TipoNegozio tipologia,Luogo luogo) {
+		super(luogo);
 		this.tipologia = tipologia;
 	}
 

@@ -44,10 +44,9 @@ public class Biglietteria {
 		super();
 	}
 
-	public Biglietteria(Luogo luogo, List<TitoloViaggio> titoliEmessi) {
+	public Biglietteria(Luogo luogo) {
 		super();
 		this.luogo = luogo;
-		this.titoliEmessi = titoliEmessi;
 	}
 
 	public Integer getId() {
