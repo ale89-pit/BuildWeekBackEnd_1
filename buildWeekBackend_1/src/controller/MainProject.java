@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import DAO.BiglietteriaDAO;
 import DAO.LuogoDAO;
+import DAO.MezzoDAO;
 import DAO.TitoloViaggioDAO;
 import DAO.UtenteDAO;
 import model.Abbonamento;
@@ -17,11 +18,13 @@ import model.Biglietteria;
 import model.Biglietto;
 import model.Distributore;
 import model.Luogo;
+import model.Mezzo;
 import model.Rivenditore;
 import model.TitoloViaggio;
 import model.Utente;
 import utils.DurataAbb;
 import utils.JpaUtil;
+import utils.TipoMezzo;
 import utils.TipoNegozio;
 
 public class MainProject {
@@ -34,10 +37,11 @@ public class MainProject {
 		TitoloViaggioDAO DAO_titolo = new TitoloViaggioDAO();
 		BiglietteriaDAO DAO_biglietteria = new BiglietteriaDAO();
 		LuogoDAO DAO_luogo = new LuogoDAO();
+		MezzoDAO DAO_mezzo=new MezzoDAO();
 	
 		
 
-		riempiDB(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo);
+		riempiDB(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo,DAO_mezzo);
 		
 		Map<Integer,Long> ricercaTitoliData = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
 
@@ -48,7 +52,7 @@ public class MainProject {
 		
 	}
 	
-	public static void riempiDB(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo) {
+	public static void riempiDB(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo,MezzoDAO DAO_mezzo) {
 	
 
 		
@@ -160,6 +164,20 @@ public class MainProject {
         for (Abbonamento abbonamento : abbonamenti) {
         	DAO_titoloViaggio.save(abbonamento);
         }
+        
+        
+        List<Mezzo> mezzi= new ArrayList<>();
+        
+        mezzi.add(new Mezzo(TipoMezzo.AUTOBUS,LocalDate.of(2023, 2, 10)));
+        mezzi.add(new Mezzo(TipoMezzo.TRAM,LocalDate.of(1996, 12, 26)));
+        mezzi.add(new Mezzo(TipoMezzo.AUTOBUS,LocalDate.of(2000,5,16),LocalDate.of(2023, 5, 24)));
+        
+       
+        for (Mezzo mezzo : mezzi) {
+        	DAO_mezzo.save(mezzo);
+        }
+        
+        
 	}
 	
 	

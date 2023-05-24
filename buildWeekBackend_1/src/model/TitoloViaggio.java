@@ -38,12 +38,10 @@ public abstract class TitoloViaggio {
 	@Column(name = "data_emissione", nullable = false)
 	private LocalDate dataEmissione;
 	
-	@Column(name = "data_scadenza", nullable = false)
-	private LocalDate dataScadenza;
+	@Column(name = "data_scadenza")
+	private LocalDate dataScadenza=null;
 	
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private DurataAbb durata;
+
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Biglietteria biglietteriaEmissione;
@@ -54,26 +52,18 @@ public abstract class TitoloViaggio {
 		super();
 	}
 	
-	public TitoloViaggio(DurataAbb durata, Biglietteria luogoEmissione) {
+	public TitoloViaggio( Biglietteria luogoEmissione,LocalDate dataScadenza) {
 		super();
 		this.dataEmissione = LocalDate.now();
-		this.durata = durata;
-		this.dataScadenza = 
-				this.durata.equals(DurataAbb.GIORNALIERO) ? LocalDate.now().plusDays(1) 
-				: this.durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7) 
-				: LocalDate.now().plusMonths(1);
 		this.biglietteriaEmissione = luogoEmissione;
+		this.dataScadenza=dataScadenza;
 	}
 
-	public TitoloViaggio(LocalDate dataEmissione, DurataAbb durata, Biglietteria luogoEmissione) {
+	public TitoloViaggio(LocalDate dataEmissione, Biglietteria luogoEmissione,LocalDate dataScadenza) {
 		super();
 		this.dataEmissione = dataEmissione;
-		this.durata = durata;
-		this.dataScadenza = 
-				this.durata.equals(DurataAbb.GIORNALIERO) ? this.dataEmissione.plusDays(1) 
-				: this.durata.equals(DurataAbb.SETTIMANALE) ? this.dataEmissione.plusDays(7) 
-				: this.dataEmissione.plusMonths(1);
 		this.biglietteriaEmissione = luogoEmissione;
+		this.dataScadenza=dataScadenza;
 	}
 
 	public Integer getCodice() {
@@ -92,17 +82,8 @@ public abstract class TitoloViaggio {
 		return dataScadenza;
 	}
 
-	public void setDataScadenza(LocalDate dataScadenza) {
-		this.dataScadenza = dataScadenza;
-	}
 
-	public DurataAbb getDurata() {
-		return durata;
-	}
 
-	public void setDurata(DurataAbb durata) {
-		this.durata = durata;
-	}
 
 	public Biglietteria getLuogoEmissione() {
 		return biglietteriaEmissione;
@@ -112,15 +93,12 @@ public abstract class TitoloViaggio {
 		this.biglietteriaEmissione = luogoEmissione;
 	}
 	
-	public boolean isValido() {
-		boolean validita = (this.dataScadenza.compareTo(LocalDate.now()) > 0) ? true : false;
-		return validita;
-	}
+
 
 	@Override
 	public String toString() {
 		return "TitoloViaggio [codice=" + codice + ", dataEmissione=" + dataEmissione + ", dataScadenza=" + dataScadenza
-				+ ", durata=" + durata + ", luogoEmissione=" + biglietteriaEmissione + "]";
+				 + ", luogoEmissione=" + biglietteriaEmissione + "]";
 	}
 	
 	

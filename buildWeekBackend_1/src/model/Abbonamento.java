@@ -2,8 +2,11 @@ package model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
@@ -12,6 +15,11 @@ import utils.DurataAbb;
 @Entity
 @DiscriminatorValue("abbonamenti")
 public class Abbonamento extends TitoloViaggio {
+	
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private DurataAbb durata;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Utente titolare;
@@ -27,12 +35,17 @@ public class Abbonamento extends TitoloViaggio {
 	}
 	
 	public Abbonamento(DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
-		super(durata, luogoEmissione);
+		super(luogoEmissione,
+                 durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7) 
+                : LocalDate.now().plusMonths(1));
 		this.titolare = titolare;
+		this.durata = durata;
+		
 	}
 
 	public Abbonamento(LocalDate dataEmissione,DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
-		super(dataEmissione, durata, luogoEmissione);
+		super(dataEmissione, luogoEmissione,  durata.equals(DurataAbb.SETTIMANALE) ? dataEmissione.plusDays(7) 
+				: dataEmissione.plusMonths(1));
 		this.titolare = titolare;
 	}
 
@@ -49,5 +62,8 @@ public class Abbonamento extends TitoloViaggio {
 		return "Abbonamento [ "+ super.toString() + "titolare=" + titolare + "]";
 	}
 	
-	
+	public boolean isValido() {
+		boolean validita = (this.getDataScadenza().compareTo(LocalDate.now()) > 0) ? true : false;
+		return validita;
+	}
 }
