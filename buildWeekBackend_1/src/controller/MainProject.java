@@ -35,81 +35,132 @@ public class MainProject {
 		BiglietteriaDAO DAO_biglietteria = new BiglietteriaDAO();
 		LuogoDAO DAO_luogo = new LuogoDAO();
 	
-		Utente u1 = new Utente("Emanuele", "Syrbe", LocalDate.of(1997, 1, 27));
-		DAO_utente.save(u1);
+		riempiDB(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo);
 		
-		Utente u2 = new Utente(LocalDate.of(2021, 5,22), "Alessio", "Pitorri", LocalDate.of(1989, 4, 27));		
-		DAO_utente.save(u2);
-		
-//		Utente u2mod = DAO_utente.getByN_tessera(5007).setRinnovoTessera(LocalDate.of(2023, 6, 10));
-//		System.out.println("Modifica data per rinnovo " + u2mod.getNome() + u2mod.getRinnovoTessera() + u2mod.getScadenzaTessera());
-//		DAO_utente.update(u2mod);
-
-		Luogo l1=new Luogo("Roma","Roma","Termini");
-		System.out.println(l1);
-		DAO_luogo.save(l1);
-		
-		Biglietteria r1 = new Rivenditore(TipoNegozio.EDICOLA, l1);
-		DAO_biglietteria.save(r1);
-		Biglietteria d1 = new Distributore(l1);
-		DAO_biglietteria.save(d1);
- 		System.out.println(r1);
-		
-		TitoloViaggio b1 =new Biglietto(LocalDate.of(2023, 3, 15), r1);
-		DAO_titolo.save(b1);
-
-		TitoloViaggio a2 = new Abbonamento(DurataAbb.MENSILI, r1, u1);
-		DAO_titolo.save(a2);
-		
-		TitoloViaggio a3 = new Abbonamento(DurataAbb.SETTIMANALI, r1, u1);
-		DAO_titolo.save(a3);
-		
-//		biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, u2mod.getTessera());
-//		biglietteria.emettiTitolo(DurataAbb.GIORNALIERO, null);
-		
-		Utente u5 = DAO_utente.getByN_tessera(5000);
-		System.out.println(u5);
-		u5.getAbbonamentiAcquistati().forEach(a -> System.out.println(a));
-		Biglietteria bigl1 = DAO_biglietteria.getById(1000);
-		bigl1.getTitoliEmessi().forEach(a -> System.out.println(a)); 
-		
-		r1.emettiBiglietto( DAO_titolo,DAO_biglietteria);
-		d1.emettiBiglietto(DAO_titolo, DAO_biglietteria);
-		r1.emettiAbbonamento(DAO_titolo, DAO_biglietteria, DurataAbb.GIORNALIERO, u5);
-		d1.emettiAbbonamento(DAO_titolo, DAO_biglietteria, DurataAbb.SETTIMANALI,u2 );
+//		Utente u5 = DAO_utente.getByN_tessera(5000);
+//		u5.getAbbonamentiAcquistati().forEach(a -> System.out.println(a));
+//		Biglietteria bigl1 = DAO_biglietteria.getById(1000);
+//		bigl1.getTitoliEmessi().forEach(a -> System.out.println(a)); 
 		
 		
-		Map<Integer,Long> ciao =DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
-		System.out.println(ciao);
+		
+		Map<Integer,Long> ricercaTitoliData = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
 		
 		
-		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
-		System.out.println(listExparire);
+//		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
+//		System.out.println(listExparire);
 		
 		
 	}
 	
-	public static void start(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo) {
+	public static void riempiDB(UtenteDAO DAO_utente, TitoloViaggioDAO DAO_titoloViaggio, BiglietteriaDAO DAO_biglietteria, LuogoDAO DAO_luogo) {
+		List<Luogo> luoghi = new ArrayList<>();
+
+		luoghi.add(new Luogo("TO", "Torino", "Torino Porta Nuova"));
+		luoghi.add(new Luogo("MI", "Milano", "Milano Centrale"));
+		luoghi.add(new Luogo("RM", "Roma", "Roma Termini"));
+		luoghi.add(new Luogo("NA", "Napoli", "Napoli Centrale"));
+		luoghi.add(new Luogo("FI", "Firenze", "Firenze Santa Maria Novella"));
+
+		for (Luogo luogo : luoghi) {
+			DAO_luogo.save(luogo);
+		}
+		
 		
 		List<Utente> utenti = new ArrayList<>();
 
-        utenti.add(new Utente( "Mario", "Rossi", LocalDate.of(1980, 3, 20)));
-        utenti.add(new Utente("Laura", "Bianchi", LocalDate.of(1985, 9, 25)));
-        utenti.add(new Utente(LocalDate.of(2023, 2, 28), "Luigi", "Verdi", LocalDate.of(1978, 12, 10)));
+        utenti.add(new Utente( "Emanuele", "Rossi", LocalDate.of(1997, 1, 27)));
+        utenti.add(new Utente("Sara", "Bianchi", LocalDate.of(1997, 9, 23)));
+        utenti.add(new Utente("Alessio", "Viola", LocalDate.of(1989, 4, 27)));
+        utenti.add(new Utente(LocalDate.of(2023, 2, 28), "Marco", "Verdi", LocalDate.of(1978, 12, 10)));
+        utenti.add(new Utente(LocalDate.of(2023, 1, 12), "Luigi", "Gialli", LocalDate.of(1983, 8, 1)));
+        utenti.add(new Utente(LocalDate.of(2023, 3, 25), "Flavio", "Blu", LocalDate.of(1987, 7, 8)));
         utenti.add(new Utente(LocalDate.of(2022, 9, 5), "Giulia", "Russo", LocalDate.of(1982, 6, 15)));
-        utenti.add(new Utente(LocalDate.of(2023, 1, 12), "Francesca", "Gialli", LocalDate.of(1983, 8, 1)));
-        utenti.add(new Utente(LocalDate.of(2021, 12, 6), "Marco", "Neri", LocalDate.of(1975, 4, 5)));
+        utenti.add(new Utente(LocalDate.of(2022, 4, 30), "Federica", "Arancio", LocalDate.of(1983, 2, 14)));
+        utenti.add(new Utente(LocalDate.of(2021, 12, 6), "Giovanni", "Neri", LocalDate.of(1975, 4, 5)));
         utenti.add(new Utente(LocalDate.of(2020, 4, 18), "Alessia", "Marroni", LocalDate.of(1981, 10, 30)));
-        utenti.add(new Utente(LocalDate.of(2023, 3, 25), "Simone", "Blu", LocalDate.of(1987, 7, 8)));
-        utenti.add(new Utente(LocalDate.of(2022, 8, 30), "Federica", "Arancio", LocalDate.of(1983, 2, 14)));
-        utenti.add(new Utente("Giovanni", "Viola", LocalDate.of(1977, 1, 5)));
 
         for (Utente utente : utenti) {
         	DAO_utente.save(utente);
         }
         
+        List<Biglietteria> biglietterie = new ArrayList<>();
+
+        List<Rivenditore> rivenditori = new ArrayList<>();
+
+        rivenditori.add(new Rivenditore(TipoNegozio.BAR, luoghi.get(0)));
+        rivenditori.add(new Rivenditore(TipoNegozio.EDICOLA, luoghi.get(0)));
+        rivenditori.add(new Rivenditore(TipoNegozio.TABACCHI, luoghi.get(1)));
+        rivenditori.add(new Rivenditore(TipoNegozio.BAR, luoghi.get(1)));
+        rivenditori.add(new Rivenditore(TipoNegozio.EDICOLA, luoghi.get(2)));
+        rivenditori.add(new Rivenditore(TipoNegozio.TABACCHI, luoghi.get(2)));
+        rivenditori.add(new Rivenditore(TipoNegozio.BAR, luoghi.get(3)));
+        rivenditori.add(new Rivenditore(TipoNegozio.EDICOLA, luoghi.get(3)));
+        rivenditori.add(new Rivenditore(TipoNegozio.TABACCHI, luoghi.get(4)));
+        rivenditori.add(new Rivenditore(TipoNegozio.BAR, luoghi.get(4)));
+
+        for (Rivenditore rivenditore : rivenditori) {
+        	DAO_biglietteria.save(rivenditore);
+        	biglietterie.add(rivenditore);
+        }
         
+        List<Distributore> distributori = new ArrayList<>();
+
+        distributori.add(new Distributore(false, luoghi.get(0)));
+        distributori.add(new Distributore(luoghi.get(0)));
+        distributori.add(new Distributore(luoghi.get(1)));
+        distributori.add(new Distributore(luoghi.get(1)));
+        distributori.add(new Distributore(false, luoghi.get(2)));
+        distributori.add(new Distributore(luoghi.get(2)));
+        distributori.add(new Distributore(luoghi.get(3)));
+        distributori.add(new Distributore(luoghi.get(3)));
+        distributori.add(new Distributore(luoghi.get(4)));
+        distributori.add(new Distributore(false, luoghi.get(4)));
+
+        for (Distributore distributore : distributori) {
+        	DAO_biglietteria.save(distributore);
+        	biglietterie.add(distributore);
+        }
         
+        List<Biglietto> biglietti = new ArrayList<>();
+
+        biglietti.add(new Biglietto(LocalDate.of(2023, 5, 1), biglietterie.get(0)));
+        biglietti.add(new Biglietto(LocalDate.of(2023, 5, 2), biglietterie.get(1)));
+        biglietti.add(new Biglietto(LocalDate.of(2023, 5, 3), biglietterie.get(2)));
+        biglietti.add(new Biglietto(LocalDate.of(2023, 5, 4), biglietterie.get(3)));
+        biglietti.add(new Biglietto(LocalDate.of(2023, 5, 5), biglietterie.get(4)));
+        biglietterie.get(6).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+        biglietterie.get(6).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+        biglietterie.get(7).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+        biglietterie.get(9).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+        biglietterie.get(12).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+        biglietterie.get(16).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+
+
+        for (Biglietto biglietto : biglietti) {
+        	DAO_titoloViaggio.save(biglietto);
+        }
         
+        List<Abbonamento> abbonamenti = new ArrayList<>();
+
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 1), DurataAbb.SETTIMANALE, biglietterie.get(0), utenti.get(0)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 4, 2), DurataAbb.MENSILE, biglietterie.get(0), utenti.get(1)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 4, 3), DurataAbb.SETTIMANALE, biglietterie.get(4), utenti.get(2)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 8), DurataAbb.MENSILE, biglietterie.get(5), utenti.get(3)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 5), DurataAbb.SETTIMANALE, biglietterie.get(11), utenti.get(4)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 6), DurataAbb.SETTIMANALE, biglietterie.get(13), utenti.get(5)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 7), DurataAbb.MENSILE, biglietterie.get(15), utenti.get(6)));
+        abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 8), DurataAbb.SETTIMANALE, biglietterie.get(18), utenti.get(7)));
+        biglietterie.get(0).emettiAbbonamento(DAO_titoloViaggio, DAO_biglietteria, DurataAbb.SETTIMANALE, utenti.get(0));
+        biglietterie.get(15).emettiAbbonamento(DAO_titoloViaggio, DAO_biglietteria, DurataAbb.MENSILE, utenti.get(1));
+        biglietterie.get(15).emettiAbbonamento(DAO_titoloViaggio, DAO_biglietteria, DurataAbb.SETTIMANALE, utenti.get(4));
+        biglietterie.get(12).emettiAbbonamento(DAO_titoloViaggio, DAO_biglietteria, DurataAbb.MENSILE, utenti.get(5));
+        biglietterie.get(11).emettiAbbonamento(DAO_titoloViaggio, DAO_biglietteria, DurataAbb.SETTIMANALE, utenti.get(7));
+        biglietterie.get(9).emettiAbbonamento(DAO_titoloViaggio, DAO_biglietteria, DurataAbb.SETTIMANALE, utenti.get(8));
+
+        for (Abbonamento abbonamento : abbonamenti) {
+        	DAO_titoloViaggio.save(abbonamento);
+        }
 	}
+	
 }

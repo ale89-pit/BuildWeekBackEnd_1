@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,6 +28,11 @@ public class Abbonamento extends TitoloViaggio {
 	
 	public Abbonamento(DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
 		super(durata, luogoEmissione);
+		this.titolare = titolare;
+	}
+
+	public Abbonamento(LocalDate dataEmissione,DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
+		super(dataEmissione, durata, luogoEmissione);
 		this.titolare = titolare;
 	}
 

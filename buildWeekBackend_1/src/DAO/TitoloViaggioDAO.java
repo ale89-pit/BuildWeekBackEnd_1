@@ -91,17 +91,23 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 		        List<Object[]> resultList = q.getResultList();
 		        
 		        Map<Integer, Long> result = new HashMap<>();
+		        
 		        for (Object[] row : resultList) {
 		            Integer biglietteriaId =(Integer) row[0];
 		            Long numeroBiglietti = (Long) row[1];
 		            result.put(biglietteriaId, numeroBiglietti);
 		        }
 		        
+		        Long totaleBiglietti = 0L;
+		        
+		        System.out.println("Conteggio titoli emessi tra il " + data1 + " ed il " + data2);
 		        for (Map.Entry<Integer, Long> entry : result.entrySet()) {
 		            Integer biglietteriaId = entry.getKey();
 		            Long numeroBiglietti = entry.getValue();
-		            System.out.println("ID Biglietteria: " + biglietteriaId + ", Numero Biglietti: " + numeroBiglietti);
+		            totaleBiglietti += numeroBiglietti;
+		            System.out.println("ID Biglietteria: " + biglietteriaId + ", Numero titoli di viaggio: " + numeroBiglietti);
 		        }
+		        System.out.println("Totale: " + totaleBiglietti);
 		        
 		        return result;
 		    } finally {

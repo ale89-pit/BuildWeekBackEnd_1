@@ -60,7 +60,7 @@ public abstract class TitoloViaggio {
 		this.durata = durata;
 		this.dataScadenza = 
 				this.durata.equals(DurataAbb.GIORNALIERO) ? LocalDate.now().plusDays(1) 
-				: this.durata.equals(DurataAbb.SETTIMANALI) ? LocalDate.now().plusDays(7) 
+				: this.durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7) 
 				: LocalDate.now().plusMonths(1);
 		this.biglietteriaEmissione = luogoEmissione;
 	}
@@ -71,7 +71,7 @@ public abstract class TitoloViaggio {
 		this.durata = durata;
 		this.dataScadenza = 
 				this.durata.equals(DurataAbb.GIORNALIERO) ? this.dataEmissione.plusDays(1) 
-				: this.durata.equals(DurataAbb.SETTIMANALI) ? this.dataEmissione.plusDays(7) 
+				: this.durata.equals(DurataAbb.SETTIMANALE) ? this.dataEmissione.plusDays(7) 
 				: this.dataEmissione.plusMonths(1);
 		this.biglietteriaEmissione = luogoEmissione;
 	}
