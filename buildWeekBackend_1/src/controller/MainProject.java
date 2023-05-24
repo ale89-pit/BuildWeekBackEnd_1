@@ -53,8 +53,8 @@ public class MainProject {
 		mezzi.get(0).validaBiglietto(biglietti.get(1));
 		mezzi.get(1).validaAbbonamento(abbonamenti.get(6));
 		
-		
-		System.out.println(mezzi.get(0));
+		List <Mezzo> newmezzi=DAO_mezzo.getAllMezzi();
+		System.out.println(newmezzi.get(0));
 	//	List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 	//	System.out.println(listExparire);
 		

@@ -28,6 +28,8 @@ import utils.DurataAbb;
 @DiscriminatorColumn(name="tipo_biglietto", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQuery(name="titolo_emesso_date",query = "SELECT t.biglietteriaEmissione.id, COUNT(t) FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.biglietteriaEmissione.id")
+@NamedQuery(name="titolo_vidimato_su",query = "SELECT t.biglietteriaEmissione.id FROM TitoloViaggio t WHERE t.utilizzatoSu = :id")// Query 1 da testare (testato su PG ) Ci sono 3 z su mezzo!
+@NamedQuery(name="titolo_emesso_date",query = "SELECT t.biglietteriaEmissione.id FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.utilizzatoSu") //Ancora da testare
 public abstract class TitoloViaggio {
 	
 	@Id

@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "utenti")
-@NamedQuery(name="check_tessera",query = "SELECT u FROM Utente u WHERE u.scadenzaTessera < NOW()")
+@NamedQuery(name="check_tessera", query = "SELECT u FROM Utente u WHERE u.scadenzaTessera < NOW()")
 public class Utente {
 	
 	@Id
