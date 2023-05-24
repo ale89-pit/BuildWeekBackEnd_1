@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import InterfaceDAO.ITitoloViaggioDAO;
 import model.Abbonamento;
+import model.Biglietto;
 import model.TitoloViaggio;
 import model.Utente;
 import utils.JpaUtil;
@@ -114,6 +115,57 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 		        em.close();
 		    }
 			
+		}
+
+		@Override
+		public void update(TitoloViaggio ti) {
+			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+				em.getTransaction().begin();
+				em.merge(ti);
+				em.getTransaction().commit();
+				log.info("TitoloViaggio Modificato correttamente dal database");
+			} catch (Exception e) {
+				em.getTransaction().rollback();
+				log.error("Errore nella Modifica del TitoloViaggio");
+			} finally {
+				em.close();
+			}
+			
+		}
+
+		@Override
+		public List<Biglietto> getAllBiglietti() {
+			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+			
+				Query q=em.createQuery("SELECT b FROM TitoloViaggio b WHERE TYPE(b)=Biglietto");
+				
+				return q.getResultList();
+				
+			}catch(Exception e) {
+				log.error(e.getMessage());
+			}finally {
+				em.close();
+			}
+			return null;
+		}
+
+		@Override
+		public List<Abbonamento> getAllAbbonamenti() {
+			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+			
+				Query q=em.createQuery("SELECT b FROM TitoloViaggio b WHERE TYPE(b)=Abbonamento");
+				
+				return q.getResultList();
+				
+			}catch(Exception e) {
+				log.error(e.getMessage());
+			}finally {
+				em.close();
+			}
+			return null;
 		}
 		
 		

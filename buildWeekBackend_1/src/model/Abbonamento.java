@@ -17,7 +17,7 @@ import utils.DurataAbb;
 public class Abbonamento extends TitoloViaggio {
 	
 	
-	@Column(nullable = false)
+	
 	@Enumerated(EnumType.STRING)
 	private DurataAbb durata;
 	
@@ -47,6 +47,7 @@ public class Abbonamento extends TitoloViaggio {
 		super(dataEmissione, luogoEmissione,  durata.equals(DurataAbb.SETTIMANALE) ? dataEmissione.plusDays(7) 
 				: dataEmissione.plusMonths(1));
 		this.titolare = titolare;
+		this.durata=durata;
 	}
 
 	public Utente getTitolare() {

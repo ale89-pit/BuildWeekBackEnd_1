@@ -2,6 +2,8 @@ package InterfaceDAO;
 
 import java.util.List;
 
+import model.Abbonamento;
+import model.Biglietto;
 import model.Mezzo;
 
 
@@ -13,4 +15,6 @@ public interface IMezziDAO {
 	public List<Mezzo>  getAllAutobus();
 	public List<Mezzo>  getAllTram();
 	public void update(Mezzo m);
+	public void validaBiglietto(Biglietto b);
+	public void validaAbbonamento(Abbonamento a);
 }

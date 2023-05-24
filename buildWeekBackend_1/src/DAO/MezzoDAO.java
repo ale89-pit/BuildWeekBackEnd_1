@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import InterfaceDAO.IMezziDAO;
+import model.Abbonamento;
+import model.Biglietto;
 import model.Mezzo;
 import utils.JpaUtil;
 import utils.TipoMezzo;
@@ -71,7 +73,7 @@ public class MezzoDAO implements IMezziDAO{
 		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 		
-			Query q=em.createQuery("SELECT m FROM MEZZO m");
+			Query q=em.createQuery("SELECT m FROM Mezzo m");
 			
 			return q.getResultList();
 			
@@ -89,7 +91,7 @@ public class MezzoDAO implements IMezziDAO{
 		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 		
-			Query q=em.createQuery("SELECT m FROM MEZZO m WHERE m.tipomezzo=m.TipoMezzo.AUTOBUS");
+			Query q=em.createQuery("SELECT m FROM Mezzo m WHERE m.tipomezzo=m.TipoMezzo.AUTOBUS");
 			
 			return q.getResultList();
 			
@@ -107,7 +109,7 @@ public class MezzoDAO implements IMezziDAO{
 		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 		
-			Query q=em.createQuery("SELECT m FROM MEZZO m WHERE m.tipomezzo=m.TipoMezzo.TRAM");
+			Query q=em.createQuery("SELECT m FROM Mezzo m WHERE m.tipomezzo=m.TipoMezzo.TRAM");
 			
 			return q.getResultList();
 			
@@ -133,6 +135,18 @@ public class MezzoDAO implements IMezziDAO{
 		}finally {
 			em.close();
 		}
+		
+	}
+
+	@Override
+	public void validaBiglietto(Biglietto b) {
+
+		
+	}
+
+	@Override
+	public void validaAbbonamento(Abbonamento a) {
+		// TODO Auto-generated method stub
 		
 	}
 

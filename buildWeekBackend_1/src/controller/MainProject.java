@@ -45,7 +45,16 @@ public class MainProject {
 		
 		Map<Integer,Long> ricercaTitoliData = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
 
+		List <Mezzo> mezzi=DAO_mezzo.getAllMezzi();
+		List<Biglietto> biglietti=DAO_titolo.getAllBiglietti();
+		List<Abbonamento> abbonamenti=DAO_titolo.getAllAbbonamenti();
+	
+		mezzi.get(0).validaBiglietto(biglietti.get(2));
+		mezzi.get(0).validaBiglietto(biglietti.get(1));
+		mezzi.get(1).validaAbbonamento(abbonamenti.get(6));
 		
+		
+		System.out.println(mezzi.get(0));
 	//	List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 	//	System.out.println(listExparire);
 		
@@ -143,7 +152,7 @@ public class MainProject {
         for (Biglietto biglietto : biglietti) {
         	DAO_titoloViaggio.save(biglietto);
         }
-        
+     
         List<Abbonamento> abbonamenti = new ArrayList<>();
 
         abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 1), DurataAbb.SETTIMANALE, biglietterie.get(0), utenti.get(0)));
@@ -164,8 +173,7 @@ public class MainProject {
         for (Abbonamento abbonamento : abbonamenti) {
         	DAO_titoloViaggio.save(abbonamento);
         }
-        
-        
+    
         List<Mezzo> mezzi= new ArrayList<>();
         
         mezzi.add(new Mezzo(TipoMezzo.AUTOBUS,LocalDate.of(2023, 2, 10)));
@@ -176,6 +184,8 @@ public class MainProject {
         for (Mezzo mezzo : mezzi) {
         	DAO_mezzo.save(mezzo);
         }
+        
+        
         
         
 	}
