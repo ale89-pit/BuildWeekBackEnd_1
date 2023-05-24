@@ -80,13 +80,13 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 			}
 
 		@Override
-		public List<TitoloViaggio> getTitoliFromDate(LocalDate data1,LocalDate data2 ) {
+		public Integer getTitoliFromDate(LocalDate data1,LocalDate data2 ) {
 			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 			try {
 				Query q = em.createNamedQuery("titolo_emesso_date");
-				q.setParameter("data1", data1.toString());
-				q.setParameter("data2", data2.toString());
-				return q.getResultList();
+				q.setParameter("data1", data1);
+				q.setParameter("data2", data2);
+				return q.getResultList().size();
 			} finally {
 				em.close();
 			}

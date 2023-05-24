@@ -77,8 +77,8 @@ public class MainProject {
 		d1.emettiAbbonamento(DAO_titolo, DAO_biglietteria, DurataAbb.SETTIMANALI,u2 );
 		
 		
-		List <TitoloViaggio> lsitaviaggi = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
-		lsitaviaggi.forEach(a -> System.out.println(a));
+		Integer ciao = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
+		System.out.println(ciao);
 	}
 	
 	

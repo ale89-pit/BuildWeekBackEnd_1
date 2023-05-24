@@ -11,5 +11,5 @@ public interface ITitoloViaggioDAO {
 	public TitoloViaggio getByCodice(Integer codice);
 	public void delete(TitoloViaggio ti);
 	public List<TitoloViaggio>  getAllTitoli();
-	public List<TitoloViaggio> getTitoliFromDate(LocalDate data1,LocalDate data2);
+	public Integer getTitoliFromDate(LocalDate data1,LocalDate data2);
 }
