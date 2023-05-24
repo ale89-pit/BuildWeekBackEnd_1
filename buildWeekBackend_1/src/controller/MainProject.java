@@ -13,6 +13,7 @@ import DAO.UtenteDAO;
 import model.Abbonamento;
 import model.Biglietteria;
 import model.Biglietto;
+import model.Distributore;
 import model.Luogo;
 import model.Rivenditore;
 import model.TitoloViaggio;
@@ -36,7 +37,7 @@ public class MainProject {
 		DAO_utente.save(u1);
 		
 		Utente u2 = new Utente(LocalDate.of(2021, 5,22), "Alessio", "Pitorri", LocalDate.of(1989, 4, 27));		
-		DAO_utente.save(u2);
+//		DAO_utente.save(u2);
 		
 //		Utente u2mod = DAO_utente.getByN_tessera(5007).setRinnovoTessera(LocalDate.of(2023, 6, 10));
 //		System.out.println("Modifica data per rinnovo " + u2mod.getNome() + u2mod.getRinnovoTessera() + u2mod.getScadenzaTessera());
@@ -48,7 +49,8 @@ public class MainProject {
 		
 		Biglietteria r1 = new Rivenditore(TipoNegozio.EDICOLA, l1);
 		DAO_biglietteria.save(r1);
-		
+		Biglietteria d1 = new Distributore(l1);
+		DAO_biglietteria.save(d1);
  		System.out.println(r1);
 		
 		TitoloViaggio b1 =new Biglietto(LocalDate.of(2023, 3, 15), r1);
@@ -69,7 +71,15 @@ public class MainProject {
 		Biglietteria bigl1 = DAO_biglietteria.getById(1000);
 		bigl1.getTitoliEmessi().forEach(a -> System.out.println(a)); 
 		
-;	}
+		r1.emettiBiglietto( DAO_titolo,DAO_biglietteria);
+		d1.emettiBiglietto(DAO_titolo, DAO_biglietteria);
+		r1.emettiAbbonamento(DAO_titolo, DAO_biglietteria, DurataAbb.GIORNALIERO, u5);
+		d1.emettiAbbonamento(DAO_titolo, DAO_biglietteria, DurataAbb.SETTIMANALI,u2 );
+		
+		
+		List <TitoloViaggio> lsitaviaggi = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
+		lsitaviaggi.forEach(a -> System.out.println(a));
+	}
 	
 	
 }

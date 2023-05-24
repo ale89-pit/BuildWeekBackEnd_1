@@ -1,5 +1,6 @@
 package DAO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,5 +78,21 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 				em.close();
 			}
 			}
+
+		@Override
+		public List<TitoloViaggio> getTitoliFromDate(LocalDate data1,LocalDate data2 ) {
+			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+				Query q = em.createNamedQuery("titolo_emesso_date");
+				q.setParameter("data1", data1.toString());
+				q.setParameter("data2", data2.toString());
+				return q.getResultList();
+			} finally {
+				em.close();
+			}
+			
+		}
+		
+		
 		
 }

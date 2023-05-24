@@ -22,17 +22,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import DAO.BiglietteriaDAO;
 import DAO.TitoloViaggioDAO;
 import DAO.UtenteDAO;
 import utils.DurataAbb;
 
 @Entity
-@Table(name="biglietterie")
-@DiscriminatorColumn(name="tipo_biglietteria", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "biglietterie")
+@DiscriminatorColumn(name = "tipo_biglietteria", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Biglietteria {
-
+	private static Logger log = LoggerFactory.getLogger(Biglietteria.class);
 	@Id
 	@SequenceGenerator(name = "id_biglietteria", sequenceName = "id_biglietteria", allocationSize = 1, initialValue = 1000)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_biglietteria")
@@ -40,10 +43,9 @@ public class Biglietteria {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Luogo luogo;
-	
+
 	@OneToMany(mappedBy = "biglietteriaEmissione", fetch = FetchType.EAGER)
 	private List<TitoloViaggio> titoliEmessi = new ArrayList<TitoloViaggio>();
-
 
 	public Biglietteria() {
 		super();
@@ -57,7 +59,6 @@ public class Biglietteria {
 	public Integer getId() {
 		return id;
 	}
-
 
 	public Luogo getLuogo() {
 		return luogo;
@@ -79,40 +80,69 @@ public class Biglietteria {
 	public String toString() {
 		return "Biglietteria [id=" + id + ", luogo=" + luogo + ", titoliEmessi=" + titoliEmessi.size() + "]";
 	}
-	
+
 	public TitoloViaggio getUltimoTitolo() {
-		
-		TitoloViaggio ultimoTitolo = new TitoloViaggioDAO().getAllTitoli().get(new TitoloViaggioDAO().getAllTitoli().size() - 1);
-		
+
+		TitoloViaggio ultimoTitolo = new TitoloViaggioDAO().getAllTitoli()
+				.get(new TitoloViaggioDAO().getAllTitoli().size() - 1);
+
 		return ultimoTitolo;
 	}
-	
-	public void emettiTitolo(DurataAbb durata, Integer numeroTessera ) {
-		
+
+	public void emettiBiglietto(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO) {
+
 		if (this.id != null) {
-			
-			Biglietteria biglietteriaEmissione = new BiglietteriaDAO().getById(this.id);
-			TitoloViaggio t;
-			
-			if (durata!= DurataAbb.GIORNALIERO) {
-				if (numeroTessera != null) {
-				Utente titolare = new UtenteDAO().getByN_tessera(numeroTessera);
-				t= new Abbonamento(durata, biglietteriaEmissione, titolare);
+
+			Biglietteria biglietteriaEmissione = bigl_DAO.getById(this.id);
+			if (!(biglietteriaEmissione instanceof Rivenditore)) {
+
+				if (biglietteriaEmissione instanceof Distributore
+						& !((Distributore) biglietteriaEmissione).isInServizio()) {
+					log.error("Distributore fuori servizio!!");
 				} else {
-					System.out.println("Per acquistare un abbonamento, inserisci il tuo numero tessera!");
+					TitoloViaggio t = new Biglietto(biglietteriaEmissione);
+					titolo_DAO.save(t);
 				}
+
+			} else {
+
+				TitoloViaggio t = new Biglietto(biglietteriaEmissione);
+				titolo_DAO.save(t);
 			}
-			
-			else {
-				t= new Biglietto(biglietteriaEmissione);
-			}
-			
-			new TitoloViaggioDAO().save(t);
+
+		} else {
+			log.error("Nessuna Biglietteria trovata!!");
 		}
-		else {
-			System.out.println("Id non presente!");
+
+	}
+
+	public void emettiAbbonamento(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO, DurataAbb durata, Utente u ) {
+		if (this.id != null) {
+			if(u.getTessera() != null ) {
+				
+				Biglietteria biglietteriaEmissione = bigl_DAO.getById(this.id);
+				if (!(biglietteriaEmissione instanceof Rivenditore)) {
+					
+					if (biglietteriaEmissione instanceof Distributore
+							& !((Distributore) biglietteriaEmissione).isInServizio()) {
+						log.error("Distributore fuori servizio!!");
+					} else {
+						TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione,u);
+						titolo_DAO.save(t);
+					}
+					
+				} else {
+					
+					TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione,u);
+					titolo_DAO.save(t);
+				}
+			}else {
+				log.error("Utente non registrato!!");
+			}
+
+		} else {
+			log.error("Nessuna Biglietteria trovata!!");
 		}
 	}
-	
-	
+
 }
