@@ -1,5 +1,7 @@
 package model;
 
-public class Tram {
+public class Tram extends Mezzi{
 
+	
+	
 }

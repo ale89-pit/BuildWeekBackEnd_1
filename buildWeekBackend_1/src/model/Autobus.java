@@ -1,5 +1,6 @@
 package model;
 
-public class Autobus {
-
+public class Autobus extends Mezzi {
+	
+	
 }
