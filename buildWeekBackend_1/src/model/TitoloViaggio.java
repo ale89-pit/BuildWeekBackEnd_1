@@ -27,7 +27,7 @@ import utils.DurataAbb;
 @Table(name="titoli_viaggio")
 @DiscriminatorColumn(name="tipo_biglietto", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@NamedQuery(name="titolo_emesso_date",query = "SELECT t FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.biglietteriaEmissione")
+@NamedQuery(name="titolo_emesso_date",query = "SELECT t.biglietteriaEmissione.id, COUNT(t) FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.biglietteriaEmissione.id")
 public abstract class TitoloViaggio {
 	
 	@Id

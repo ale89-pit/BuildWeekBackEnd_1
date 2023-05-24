@@ -1,7 +1,9 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -37,7 +39,7 @@ public class MainProject {
 		DAO_utente.save(u1);
 		
 		Utente u2 = new Utente(LocalDate.of(2021, 5,22), "Alessio", "Pitorri", LocalDate.of(1989, 4, 27));		
-//		DAO_utente.save(u2);
+		DAO_utente.save(u2);
 		
 //		Utente u2mod = DAO_utente.getByN_tessera(5007).setRinnovoTessera(LocalDate.of(2023, 6, 10));
 //		System.out.println("Modifica data per rinnovo " + u2mod.getNome() + u2mod.getRinnovoTessera() + u2mod.getScadenzaTessera());
@@ -77,9 +79,37 @@ public class MainProject {
 		d1.emettiAbbonamento(DAO_titolo, DAO_biglietteria, DurataAbb.SETTIMANALI,u2 );
 		
 		
-		Integer ciao = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
+		Map<Integer,Long> ciao =DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
 		System.out.println(ciao);
+		
+		
+		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
+		System.out.println(listExparire);
+		
+		
 	}
 	
-	
+	public static void start(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo) {
+		
+		List<Utente> utenti = new ArrayList<>();
+
+        utenti.add(new Utente( "Mario", "Rossi", LocalDate.of(1980, 3, 20)));
+        utenti.add(new Utente("Laura", "Bianchi", LocalDate.of(1985, 9, 25)));
+        utenti.add(new Utente(LocalDate.of(2023, 2, 28), "Luigi", "Verdi", LocalDate.of(1978, 12, 10)));
+        utenti.add(new Utente(LocalDate.of(2022, 9, 5), "Giulia", "Russo", LocalDate.of(1982, 6, 15)));
+        utenti.add(new Utente(LocalDate.of(2023, 1, 12), "Francesca", "Gialli", LocalDate.of(1983, 8, 1)));
+        utenti.add(new Utente(LocalDate.of(2021, 12, 6), "Marco", "Neri", LocalDate.of(1975, 4, 5)));
+        utenti.add(new Utente(LocalDate.of(2020, 4, 18), "Alessia", "Marroni", LocalDate.of(1981, 10, 30)));
+        utenti.add(new Utente(LocalDate.of(2023, 3, 25), "Simone", "Blu", LocalDate.of(1987, 7, 8)));
+        utenti.add(new Utente(LocalDate.of(2022, 8, 30), "Federica", "Arancio", LocalDate.of(1983, 2, 14)));
+        utenti.add(new Utente("Giovanni", "Viola", LocalDate.of(1977, 1, 5)));
+
+        for (Utente utente : utenti) {
+        	DAO_utente.save(utente);
+        }
+        
+        
+        
+        
+	}
 }

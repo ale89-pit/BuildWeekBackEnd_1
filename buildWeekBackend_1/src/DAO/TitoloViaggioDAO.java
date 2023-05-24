@@ -2,7 +2,9 @@ package DAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -80,16 +82,31 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 			}
 
 		@Override
-		public Integer getTitoliFromDate(LocalDate data1,LocalDate data2 ) {
-			EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
-			try {
-				Query q = em.createNamedQuery("titolo_emesso_date");
-				q.setParameter("data1", data1);
-				q.setParameter("data2", data2);
-				return q.getResultList().size();
-			} finally {
-				em.close();
-			}
+		public Map<Integer,Long> getTitoliFromDate(LocalDate data1,LocalDate data2 ) {
+		    EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		    try {
+		        Query q = em.createNamedQuery("titolo_emesso_date");
+		        q.setParameter("data1", data1);
+		        q.setParameter("data2", data2);
+		        List<Object[]> resultList = q.getResultList();
+		        
+		        Map<Integer, Long> result = new HashMap<>();
+		        for (Object[] row : resultList) {
+		            Integer biglietteriaId =(Integer) row[0];
+		            Long numeroBiglietti = (Long) row[1];
+		            result.put(biglietteriaId, numeroBiglietti);
+		        }
+		        
+		        for (Map.Entry<Integer, Long> entry : result.entrySet()) {
+		            Integer biglietteriaId = entry.getKey();
+		            Long numeroBiglietti = entry.getValue();
+		            System.out.println("ID Biglietteria: " + biglietteriaId + ", Numero Biglietti: " + numeroBiglietti);
+		        }
+		        
+		        return result;
+		    } finally {
+		        em.close();
+		    }
 			
 		}
 		

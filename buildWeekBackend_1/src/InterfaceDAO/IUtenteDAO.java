@@ -11,5 +11,5 @@ public interface IUtenteDAO {
 		public void delete(Utente u);
 		public void update(Utente u);
 		public List<Utente>  getAllUsers();
-		
+		public List<Utente> getAllUsersExpaire();
 }

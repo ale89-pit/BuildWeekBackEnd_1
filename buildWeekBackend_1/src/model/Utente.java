@@ -10,12 +10,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "utenti")
+@NamedQuery(name="check_tessera",query = "SELECT u FROM Utente u WHERE u.scadenzaTessera < NOW()")
 public class Utente {
 	
 	@Id

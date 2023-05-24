@@ -95,4 +95,14 @@ public class UtenteDAO implements IUtenteDAO {
 		}
 	}
 
+	@Override
+	public List<Utente> getAllUsersExpaire() {
+	
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		
+		Query q=em.createNamedQuery("check_tessera");
+		
+		return q.getResultList();
+	}
+
 }
