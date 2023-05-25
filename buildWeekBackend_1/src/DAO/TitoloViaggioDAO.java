@@ -194,37 +194,40 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 		        em.close();
 		        
 		    }
-//		    EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-//		    try {
-//		        Query q = em.createNamedQuery("titolo_emesso_date");
-//		        q.setParameter("data1", data1);
-//		        q.setParameter("data2", data2);
-//		        List<Object[]> resultList = q.getResultList();
-//		        
-//		        Map<Integer, Long> result = new HashMap<>();
-//		        
-//		        for (Object[] row : resultList) {
-//		            Integer biglietteriaId =(Integer) row[0];
-//		            Long numeroBiglietti = (Long) row[1];
-//		            result.put(biglietteriaId, numeroBiglietti);
-//		        }
-//		        
-//		        Long totaleBiglietti = 0L;
-//		        
-//		        System.out.println("Conteggio titoli emessi tra il " + data1 + " ed il " + data2);
-//		        for (Map.Entry<Integer, Long> entry : result.entrySet()) {
-//		            Integer biglietteriaId = entry.getKey();
-//		            Long numeroBiglietti = entry.getValue();
-//		            totaleBiglietti += numeroBiglietti;
-//		            System.out.println("ID Biglietteria: " + biglietteriaId + ", Numero titoli di viaggio: " + numeroBiglietti);
-//		        }
-//		        System.out.println("Totale: " + totaleBiglietti);
-//		        
-//		        return result;
-//		    } finally {
-//		        em.close();
-//		    }
 		 
+		}
+		@Override
+		public Map<Integer, Long> getTitoliVidimatiPeriodo(LocalDate data1,LocalDate data2) {
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		    try {
+		        Query q = em.createNamedQuery("titolo_vidimato_date");
+		        q.setParameter("data1", data1);
+		        q.setParameter("data2", data2);
+		        List<Object[]> resultList = q.getResultList();
+		        
+		        Map<Integer, Long> result = new HashMap<>();
+		        
+		        for (Object[] row : resultList) {
+		            Integer mezzoId =(Integer) row[0];
+		            Long numeroBiglietti = (Long) row[1];
+		            result.put(mezzoId, numeroBiglietti);
+		        }
+		        
+		        Long totaleBiglietti = 0L;
+		        
+		        System.out.println("Conteggio titoli emessi tra il " + data1 + " ed il " + data2);
+		        for (Map.Entry<Integer, Long> entry : result.entrySet()) {
+		            Integer mezzoId = entry.getKey();
+		            Long numeroBiglietti = entry.getValue();
+		            totaleBiglietti += numeroBiglietti;
+		            System.out.println("ID mezzo di trasporto: " + mezzoId + ", Numero titoli di viaggio vidimati: " + numeroBiglietti);
+		        }
+		        System.out.println("Totale: " + totaleBiglietti);
+		        
+		        return result;
+		    } finally {
+		        em.close();
+		    }
 		}
 		
 }

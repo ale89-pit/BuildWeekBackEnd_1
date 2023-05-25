@@ -60,6 +60,8 @@ public class MainProject {
 		System.out.println(newmezzi.get(1));
 		Integer idMezzo = newmezzi.get(0).getId();
 		List <Biglietto> listbigliettiSu = DAO_titolo.getTitoliFromMezzo(1);
+		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
+
 //		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 		
 		System.out.println(biglietti.get(0));

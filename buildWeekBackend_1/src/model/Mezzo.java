@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -46,12 +49,26 @@ public class Mezzo {
 	@OneToMany(mappedBy = "utilizzatoSu", fetch = FetchType.EAGER)
 	private List<Biglietto> vidimati  = new ArrayList<Biglietto>();
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "tratta_assegnata")
+	private Tratta trattaAssegnata;
+	
+	@Column(name="orario_partenza")
+	private LocalTime orarioPartenza;
+	
+	@Column(name="orario_arrivo")
+	private LocalTime orarioArrivo;
+	
+	@Column(name="tempo_effettivo")
+	private LocalTime tempoEffettivo;
+	
+	@Column(name="velocita", nullable = false)
+	private Integer velocita;
+	
 
 	public Mezzo() {
 		super();
 	}
-
-
 
 	public Mezzo(TipoMezzo tipoMezzo, LocalDate inizioServizio, LocalDate fineServizio) {
 		super();
@@ -59,8 +76,8 @@ public class Mezzo {
 		this.inizioServizio = inizioServizio;
 		this.fineServizio = fineServizio;
 		this.tipoMezzo=tipoMezzo;
-		
-		this.capienza= tipoMezzo.equals(TipoMezzo.TRAM) ?  4 : 6; 
+		this.capienza = tipoMezzo.equals(TipoMezzo.TRAM) ?  4 : 6; 
+		this.velocita = tipoMezzo.equals(TipoMezzo.TRAM) ?  60 : 40; 
 	}
 	
 	public Mezzo(TipoMezzo tipoMezzo, LocalDate inizioServizio) {
@@ -69,6 +86,7 @@ public class Mezzo {
 		this.tipoMezzo=tipoMezzo;
 		this.stato=Status.IN_SERVIZIO;
 		this.capienza= tipoMezzo.equals(TipoMezzo.TRAM) ?  4 : 6; 
+		this.velocita = tipoMezzo.equals(TipoMezzo.TRAM) ?  60 : 40; 
 	}
 	
 
@@ -98,19 +116,48 @@ public class Mezzo {
 		return capienza;
 	}
 
-
-
 	public Integer getId() {
 		return id;
 	}
-
-
 
 	public TipoMezzo getTipoMezzo() {
 		return tipoMezzo;
 	}
 	
-	
+	public Tratta getTrattaAssegnata() {
+		return trattaAssegnata;
+	}
+
+	public void setTrattaAssegnata(Tratta trattaAssegnata) {
+		this.trattaAssegnata = trattaAssegnata;
+	}
+
+	public LocalTime getOrarioPartenza() {
+		return orarioPartenza;
+	}
+
+	public void setOrarioPartenza(LocalTime orarioPartenza) {
+		this.orarioPartenza = orarioPartenza;
+	}
+
+	public LocalTime getTempoEffettivo() {
+		return tempoEffettivo;
+	}
+
+	public void setTempoEffettivo(LocalTime tempoEffettivo) {
+		this.tempoEffettivo = tempoEffettivo;
+	}
+
+	public LocalTime getOrarioArrivo() {
+		return orarioArrivo;
+	}
+
+	public Integer getVelocita() {
+		return velocita;
+	}
+
+
+
 	public void validaBiglietto(Biglietto b) {
 		if(this.id!=null) {
 	if(b.getCodice()!=null) {

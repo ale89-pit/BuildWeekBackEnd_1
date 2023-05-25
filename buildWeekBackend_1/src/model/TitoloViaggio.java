@@ -29,8 +29,7 @@ import utils.DurataAbb;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQuery(name="titolo_emesso_date",query = "SELECT t.biglietteriaEmissione.id, COUNT(t) FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.biglietteriaEmissione.id")
 @NamedQuery(name="titolo_vidimato_su",query = "SELECT t  FROM TitoloViaggio t WHERE t.utilizzatoSu.id = :id")
-@NamedQuery(name="titolo_vidimato_date",query = "SELECT t.biglietteriaEmissione.id FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.utilizzatoSu") //Ancora da testare
-//SELECT * FROM titoli_viaggio WHERE data_vidimazione BETWEEN '2023/01/28' AND '2023/05/25'
+@NamedQuery(name="titolo_vidimato_date",query = "SELECT t.utilizzatoSu.id, COUNT(t) FROM TitoloViaggio t WHERE t.dataVidimazione BETWEEN :data1 AND :data2 GROUP BY t.utilizzatoSu.id")
 public abstract class TitoloViaggio {
 	
 	@Id
@@ -40,10 +39,6 @@ public abstract class TitoloViaggio {
 	
 	@Column(name = "data_emissione", nullable = false)
 	private LocalDate dataEmissione;
-	
-	
-	
-
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Biglietteria biglietteriaEmissione;
