@@ -67,7 +67,7 @@ public class LuogoDAO implements ILuogoDAO {
 	}
 
 	@Override
-	public List<Luogo> getAllUsers() {
+	public List<Luogo> getAllLuoghi() {
 		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			Query q = em.createQuery("SELECT u FROM Luogo u");

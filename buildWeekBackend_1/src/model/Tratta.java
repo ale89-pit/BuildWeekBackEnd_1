@@ -2,6 +2,7 @@ package model;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import utils.TipoMezzo;
 
 @Entity
 @Table(name="tratte")
@@ -35,7 +38,7 @@ public class Tratta {
 	private double kmTratta;
 	
 	@Column(name = "tempo_stimato")
-	private Duration tempoStimato;
+	private Long tempoStimato;
 	
 	@OneToMany(mappedBy = "trattaAssegnata", fetch = FetchType.EAGER)
 	private List<Mezzo> mezziSuTratta;
@@ -77,11 +80,16 @@ public class Tratta {
 
 	public void setKmTratta(double kmTratta) {
 		this.kmTratta = kmTratta;
-		this.tempoStimato = Duration.ofMinutes((long)((kmTratta / 50)*60));
+		
 	}
 	
-	public Duration getTempoStimato() {
+	public Long getTempoStimato() {
 		return tempoStimato;
+	}
+	public void setTempoStimato(Mezzo mezzo) {
+		double velocita = mezzo.getTipoMezzo().equals(TipoMezzo.AUTOBUS)? 50: 60; 
+		this.tempoStimato = Duration.of(((long) ((kmTratta / velocita)*60.0)), ChronoUnit.MINUTES).toHours();
+		System.out.println(tempoStimato);
 	}
 
 	public List<Mezzo> getMezziSuTratta() {

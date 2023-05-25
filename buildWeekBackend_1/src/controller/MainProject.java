@@ -2,6 +2,7 @@ package controller;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import DAO.BiglietteriaDAO;
 import DAO.LuogoDAO;
 import DAO.MezzoDAO;
 import DAO.TitoloViaggioDAO;
+import DAO.TrattaDAO;
 import DAO.UtenteDAO;
 import model.Abbonamento;
 import model.Biglietteria;
@@ -22,6 +24,7 @@ import model.Luogo;
 import model.Mezzo;
 import model.Rivenditore;
 import model.TitoloViaggio;
+import model.Tratta;
 import model.Utente;
 import utils.DurataAbb;
 import utils.JpaUtil;
@@ -39,6 +42,7 @@ public class MainProject {
 		BiglietteriaDAO DAO_biglietteria = new BiglietteriaDAO();
 		LuogoDAO DAO_luogo = new LuogoDAO();
 		MezzoDAO DAO_mezzo=new MezzoDAO();
+		TrattaDAO DAO_tratta = new TrattaDAO();
 	
 		
 
@@ -49,7 +53,7 @@ public class MainProject {
 		List <Mezzo> mezzi=DAO_mezzo.getAllMezzi();
 		List<Biglietto> biglietti=DAO_titolo.getAllBiglietti();
 		List<Abbonamento> abbonamenti=DAO_titolo.getAllAbbonamenti();
-	
+		List<Luogo> luoghi= DAO_luogo.getAllLuoghi();
 		mezzi.get(0).validaBiglietto(biglietti.get(2));
 		mezzi.get(1).validaBiglietto(biglietti.get(3),LocalDate.of(2023, 4, 12));
 		mezzi.get(0).validaBiglietto(biglietti.get(1));
@@ -64,10 +68,11 @@ public class MainProject {
 //		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
 //		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 		
-		double min = (120/50)*60;
-		Duration ciao = Duration.ofMinutes((long) min);
+		 Tratta t1 = new Tratta(luoghi.get(0),luoghi.get(1),500.0);
+		 t1.setTempoStimato(mezzi.get(0));
+		DAO_tratta.save(t1);
 		
-		System.out.println("Durata min: " + ciao.toMinutes());
+		
 		
 
 		

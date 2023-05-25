@@ -9,5 +9,5 @@ public interface ILuogoDAO {
 	public void save(Luogo bi);
 	public Luogo getById(Integer id);
 	public void delete(Luogo bi);
-	public List<Luogo>  getAllUsers();
+	public List<Luogo>  getAllLuoghi();
 }
