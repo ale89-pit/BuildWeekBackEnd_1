@@ -68,11 +68,27 @@ public class MainProject {
 //		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
 //		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 		
-		 Tratta t1 = new Tratta(luoghi.get(0),luoghi.get(1),500.0);
+		 Tratta t1 = new Tratta(luoghi.get(0),luoghi.get(1),73.5);
+		 Tratta t2 = new Tratta(luoghi.get(1),luoghi.get(0),80.5);
+		 
 		 t1.setTempoStimato(mezzi.get(0));
+		 
+		 t2.setTempoStimato(mezzi.get(0));
+		 
+		 
 		DAO_tratta.save(t1);
+		DAO_tratta.save(t2);
 		
 		
+		
+		
+		
+		
+		DAO_mezzo.update(mezzi.get(0));
+	
+		
+	
+		//System.out.println(DAO_tratta.getById(mezzi.get(0).getId()).getTempoStimato());
 		
 
 		

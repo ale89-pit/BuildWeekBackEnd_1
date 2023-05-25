@@ -47,21 +47,13 @@ public class Mezzo {
 	@Column(name="fine_servizio")
 	private LocalDate fineServizio;
 	
-	@OneToMany(mappedBy = "utilizzatoSu", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "utilizzatoSu")
 	private List<Biglietto> vidimati  = new ArrayList<Biglietto>();
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "tratta_assegnata")
-	private Tratta trattaAssegnata;
+	@OneToMany(mappedBy = "mezzo")
+	private List<Viaggio> viaggiPercorsi=new ArrayList<Viaggio>();
 	
-	@Column(name="orario_partenza")
-	private LocalTime orarioPartenza;
-	
-	@Column(name="orario_arrivo")
-	private LocalTime orarioArrivo;
-	
-	@Column(name="tempo_effettivo")
-	private Duration tempoEffettivo;
+
 	
 	@Column(name="velocita", nullable = false)
 	private Integer velocita;
@@ -89,6 +81,12 @@ public class Mezzo {
 		this.capienza = tipoMezzo.equals(TipoMezzo.TRAM) ?  4 : 6; 
 		this.velocita = tipoMezzo.equals(TipoMezzo.TRAM) ?  60 : 40; 
 	}
+	
+
+	public List<Viaggio> getViaggiPercorsi() {
+		return viaggiPercorsi;
+	}
+
 	
 
 	public Status getStato() {
@@ -123,34 +121,7 @@ public class Mezzo {
 		return tipoMezzo;
 	}
 	
-	public Tratta getTrattaAssegnata() {
-		return trattaAssegnata;
-	}
-
-	public void setTrattaAssegnata(Tratta trattaAssegnata) {
-		this.trattaAssegnata = trattaAssegnata;
-	}
-
-	public LocalTime getOrarioPartenza() {
-		return orarioPartenza;
-	}
-
-	public void setOrarioPartenza(LocalTime orarioPartenza) {
-		this.orarioPartenza = orarioPartenza;
-	}
-
-	public Duration getTempoEffettivo() {
-		return tempoEffettivo;
-	}
-
-	public void setTempoEffettivo(Duration tempoEffettivo) {
-		this.tempoEffettivo = tempoEffettivo;
-	}
-
-	public LocalTime getOrarioArrivo() {
-		return orarioArrivo;
-	}
-
+	
 	public Integer getVelocita() {
 		return velocita;
 	}
@@ -229,8 +200,7 @@ public class Mezzo {
 		}
 	}
 
-	
-	public void percorriTratta() {};
+
 	
 
 
