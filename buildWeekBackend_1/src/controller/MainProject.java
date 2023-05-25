@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +56,20 @@ public class MainProject {
 		mezzi.get(1).validaBiglietto(biglietti.get(5),LocalDate.of(2023, 1, 28));
 		mezzi.get(1).validaAbbonamento(abbonamenti.get(6));
 		
-		List <Mezzo> newmezzi=DAO_mezzo.getAllMezzi();
-		System.out.println(newmezzi.get(0));
-		System.out.println(newmezzi.get(1));
-		Integer idMezzo = newmezzi.get(0).getId();
-		List <Biglietto> listbigliettiSu = DAO_titolo.getTitoliFromMezzo(1);
-		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
-
+//		List <Mezzo> newmezzi=DAO_mezzo.getAllMezzi();
+//		System.out.println(newmezzi.get(0));
+//		System.out.println(newmezzi.get(1));
+//		Integer idMezzo = newmezzi.get(0).getId();
+//		List <Biglietto> listbigliettiSu = DAO_titolo.getTitoliFromMezzo(1);
+//		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
 //		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 		
-		System.out.println(biglietti.get(0));
-		System.out.println(biglietti.get(1));
+		double min = (120/50)*60;
+		Duration ciao = Duration.ofMinutes((long) min);
+		
+		System.out.println("Durata min: " + ciao.toMinutes());
+		
+
 		
 	}
 	

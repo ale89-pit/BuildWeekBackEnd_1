@@ -1,5 +1,6 @@
 package model;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class Mezzo {
 	private LocalTime orarioArrivo;
 	
 	@Column(name="tempo_effettivo")
-	private LocalTime tempoEffettivo;
+	private Duration tempoEffettivo;
 	
 	@Column(name="velocita", nullable = false)
 	private Integer velocita;
@@ -69,7 +70,16 @@ public class Mezzo {
 	public Mezzo() {
 		super();
 	}
-
+	
+	public Mezzo(TipoMezzo tipoMezzo, LocalDate inizioServizio) {
+		super();
+		this.inizioServizio = inizioServizio;
+		this.tipoMezzo=tipoMezzo;
+		this.stato = Status.IN_SERVIZIO;
+		this.capienza= tipoMezzo.equals(TipoMezzo.TRAM) ?  4 : 6; 
+		this.velocita = tipoMezzo.equals(TipoMezzo.TRAM) ?  60 : 40; 
+	}
+	
 	public Mezzo(TipoMezzo tipoMezzo, LocalDate inizioServizio, LocalDate fineServizio) {
 		super();
 		this.stato = (fineServizio.compareTo(LocalDate.now())>0)? Status.IN_SERVIZIO : Status.IN_MANUTENZIONE;
@@ -80,21 +90,10 @@ public class Mezzo {
 		this.velocita = tipoMezzo.equals(TipoMezzo.TRAM) ?  60 : 40; 
 	}
 	
-	public Mezzo(TipoMezzo tipoMezzo, LocalDate inizioServizio) {
-		super();
-		this.inizioServizio = inizioServizio;
-		this.tipoMezzo=tipoMezzo;
-		this.stato=Status.IN_SERVIZIO;
-		this.capienza= tipoMezzo.equals(TipoMezzo.TRAM) ?  4 : 6; 
-		this.velocita = tipoMezzo.equals(TipoMezzo.TRAM) ?  60 : 40; 
-	}
-	
 
 	public Status getStato() {
 	return	(this.fineServizio.compareTo(LocalDate.now())>0)? Status.IN_SERVIZIO : Status.IN_MANUTENZIONE;
-		
 	}
-
 
 	public LocalDate getInizioServizio() {
 		return inizioServizio;
@@ -140,11 +139,11 @@ public class Mezzo {
 		this.orarioPartenza = orarioPartenza;
 	}
 
-	public LocalTime getTempoEffettivo() {
+	public Duration getTempoEffettivo() {
 		return tempoEffettivo;
 	}
 
-	public void setTempoEffettivo(LocalTime tempoEffettivo) {
+	public void setTempoEffettivo(Duration tempoEffettivo) {
 		this.tempoEffettivo = tempoEffettivo;
 	}
 
@@ -174,13 +173,12 @@ public class Mezzo {
 		}else {
 			System.out.println("Questo biglietto è stato già utilizzato");
 		}
-		
-		
 	}else {
 		System.out.println("Biglietto non riconosciuto");
 	}
 		}
 	}
+	
 	public void validaBiglietto(Biglietto b,LocalDate dataVid) {
 		if(this.id!=null) {
 	if(b.getCodice()!=null) {
@@ -191,7 +189,7 @@ public class Mezzo {
 			Biglietto biglietto=(Biglietto)DAO_titolo.getByCodice(b.getCodice());
 			
 			biglietto.setUtilizzatoSu(mezzo,dataVid);
-//			
+		
 			System.out.println("Questo biglietto è stato vidimato");
 			DAO_titolo.update(biglietto);
 			DAO_mezzo.update(mezzo);
@@ -209,7 +207,7 @@ public class Mezzo {
 
 	public void validaAbbonamento(Abbonamento a) {
 		
-		if(this.id!=null) {
+	if(this.id!=null) {
 	if(a.getCodice()!=null) {
 		if(a.getDataScadenza().compareTo(LocalDate.now())>0) {
 			MezzoDAO DAO_mezzo=new MezzoDAO();
@@ -231,7 +229,8 @@ public class Mezzo {
 		}
 	}
 
-		
+	
+	public void percorriTratta() {};
 	
 
 
