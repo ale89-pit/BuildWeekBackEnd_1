@@ -16,16 +16,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import DAO.MezzoDAO;
 import DAO.TitoloViaggioDAO;
+import DAO.ViaggioDAO;
 import utils.Status;
 import utils.TipoMezzo;
 
 @Entity
 @Table(name="mezzi")
+@NamedQuery(name="numero_viaggi_tratta", query = "SELECT COUNT(v), AVG(v.tempoEffettivo) FROM Viaggio v WHERE v.mezzo.id = :id AND v.tratta.numeroTratta = :nTratta GROUP BY v.mezzo.id")
 public class Mezzo {
 	
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,8 +55,6 @@ public class Mezzo {
 	
 	@OneToMany(mappedBy = "mezzo")
 	private List<Viaggio> viaggiPercorsi=new ArrayList<Viaggio>();
-	
-
 	
 	@Column(name="velocita", nullable = false)
 	private Integer velocita;
@@ -87,10 +88,10 @@ public class Mezzo {
 		return viaggiPercorsi;
 	}
 
-	
-
 	public Status getStato() {
-	return	(this.fineServizio.compareTo(LocalDate.now())>0)? Status.IN_SERVIZIO : Status.IN_MANUTENZIONE;
+		Status statoAttuale = (this.fineServizio != null) ? 
+				((this.fineServizio.compareTo(LocalDate.now())>0) ? Status.IN_SERVIZIO : Status.IN_MANUTENZIONE) : Status.IN_SERVIZIO;
+	return statoAttuale;
 	}
 
 	public LocalDate getInizioServizio() {
@@ -126,8 +127,6 @@ public class Mezzo {
 		return velocita;
 	}
 
-
-
 	public void validaBiglietto(Biglietto b) {
 		if(this.id!=null) {
 	if(b.getCodice()!=null) {
@@ -150,7 +149,7 @@ public class Mezzo {
 		}
 	}
 	
-	public void validaBiglietto(Biglietto b,LocalDate dataVid) {
+	public void validaBiglietto(Biglietto b, LocalDate dataVid) {
 		if(this.id!=null) {
 	if(b.getCodice()!=null) {
 		if(!b.isVidimato()) {
@@ -159,7 +158,7 @@ public class Mezzo {
 			TitoloViaggioDAO DAO_titolo =new TitoloViaggioDAO();
 			Biglietto biglietto=(Biglietto)DAO_titolo.getByCodice(b.getCodice());
 			
-			biglietto.setUtilizzatoSu(mezzo,dataVid);
+			biglietto.setUtilizzatoSu(mezzo, dataVid);
 		
 			System.out.println("Questo biglietto è stato vidimato");
 			DAO_titolo.update(biglietto);
@@ -184,23 +183,36 @@ public class Mezzo {
 			MezzoDAO DAO_mezzo=new MezzoDAO();
 			Mezzo mezzo=DAO_mezzo.getById(this.id);
 			TitoloViaggioDAO DAO_titolo =new TitoloViaggioDAO();
-			Abbonamento abbanamento=(Abbonamento)DAO_titolo.getByCodice(a.getCodice());
-			
-			
+			Abbonamento abbonamento=(Abbonamento)DAO_titolo.getByCodice(a.getCodice());
 			System.out.println("Questo Abbonamento è ancora valido");
-
 		}else {
 			System.out.println("Questo Abbonamento è scaduto");
 		}
-		
-		
 	}else {
 		System.out.println("Abbonamento non riconosciuto");
 	}
 		}
 	}
 
-
+	public void percorriTratta(Tratta tratta, LocalTime orarioPartenza, LocalTime orarioArrivo) {
+		if(this.id != null && this.stato != Status.IN_MANUTENZIONE ) {
+			if(tratta.getNumeroTratta() != null) {
+				MezzoDAO DAO_mezzo = new MezzoDAO();
+				Mezzo mezzo = DAO_mezzo.getById(this.id);
+				
+				Viaggio nuovoViaggio = new Viaggio(this, tratta, orarioPartenza, orarioArrivo);
+				
+				new ViaggioDAO().save(nuovoViaggio);
+				DAO_mezzo.update(mezzo);
+				
+				System.out.println("Viaggio creato!");
+			} else {
+			System.out.println("Questa tratta non esiste");
+			}
+		} else {
+		System.out.println("Il mezzo non è in condizione di viaggiare");
+		}
+	};
 	
 
 

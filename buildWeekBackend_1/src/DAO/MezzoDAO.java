@@ -109,7 +109,7 @@ public class MezzoDAO implements IMezziDAO{
 		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 		
-			Query q=em.createQuery("SELECT m FROM Mezzo m WHERE m.tipomezzo=m.TipoMezzo.TRAM");
+			Query q=em.createQuery("SELECT m FROM Mezzo m WHERE m.tipomezzo = m.TipoMezzo.TRAM");
 			
 			return q.getResultList();
 			
@@ -123,7 +123,6 @@ public class MezzoDAO implements IMezziDAO{
 
 	@Override
 	public void update(Mezzo m) {
-		// TODO Auto-generated method stub
 		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 		em.getTransaction().begin();
@@ -139,15 +138,28 @@ public class MezzoDAO implements IMezziDAO{
 	}
 
 	@Override
-	public void validaBiglietto(Biglietto b) {
+	public Object viaggiPercorsiSuTratta(Integer mezzoId, Integer trattaId) {
+		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			Query q = em.createNamedQuery("numero_viaggi_tratta");
+			q.setParameter("id", mezzoId);
+			q.setParameter("nTratta", trattaId);
+			
+	        List<Object> resultList = q.getResultList();
+	        
+	        Long numeroViaggi = (Long) resultList.get(0);
+	        Long tempoMedio = (Long) resultList.get(1);
+			
+			log.info("Il mezzo con id: "+ mezzoId + "ha eseguito " + numeroViaggi + " viaggi, con tempo medio di " + tempoMedio + " minuti, sulla tratta numero " + trattaId);
+			return resultList;
 
-		
+		} catch(Exception e) {
+			log.error(e.getMessage());
+		} finally {
+			em.close();
+		}
+		return null;
 	}
 
-	@Override
-	public void validaAbbonamento(Abbonamento a) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

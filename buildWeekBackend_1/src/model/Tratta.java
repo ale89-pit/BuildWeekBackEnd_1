@@ -40,10 +40,9 @@ public class Tratta {
 	@Column(name = "km_tratta")
 	private double kmTratta;
 	
-	@Column(name = "tempo_stimato")
+	@Column(name = "tempo_stimato_min")
 	private Long tempoStimato;
 	
-
 
 	public Tratta() {
 		super();
@@ -54,6 +53,7 @@ public class Tratta {
 		this.partenza = partenza;
 		this.capolinea = capolinea;
 		this.kmTratta = kmTratta;
+		this.tempoStimato = (Duration.of(((long) ((kmTratta / 50)*60.0)), ChronoUnit.MINUTES).toMinutes());
 	}
 
 	public Integer getNumeroTratta() {
@@ -88,17 +88,9 @@ public class Tratta {
 	public Long getTempoStimato() {
 		return tempoStimato;
 	}
-	public void setTempoStimato(Mezzo mezzo) {
-		double velocita = mezzo.getTipoMezzo().equals(TipoMezzo.AUTOBUS)? 50: 60; 
-		this.tempoStimato = Duration.of(((long) ((kmTratta / velocita)*60.0)), ChronoUnit.MINUTES).toMinutes();
-		System.out.println(tempoStimato);
+	
+	public void setTempoStimato(Long tempoStimato) {
+		this.tempoStimato = tempoStimato;
 	}
-
-	
-	
-	
-
-	
-	
 	
 }

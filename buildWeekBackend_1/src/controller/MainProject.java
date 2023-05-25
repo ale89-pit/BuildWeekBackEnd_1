@@ -2,6 +2,7 @@ package controller;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,18 +43,19 @@ public class MainProject {
 		BiglietteriaDAO DAO_biglietteria = new BiglietteriaDAO();
 		LuogoDAO DAO_luogo = new LuogoDAO();
 		MezzoDAO DAO_mezzo=new MezzoDAO();
-		TrattaDAO DAO_tratta = new TrattaDAO();
-	
+		TrattaDAO DAO_tratta = new TrattaDAO();	
 		
 
 		riempiDB(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo,DAO_mezzo);
 		
 		Map<Integer,Long> ricercaTitoliData = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
 
-		List <Mezzo> mezzi=DAO_mezzo.getAllMezzi();
-		List<Biglietto> biglietti=DAO_titolo.getAllBiglietti();
-		List<Abbonamento> abbonamenti=DAO_titolo.getAllAbbonamenti();
-		List<Luogo> luoghi= DAO_luogo.getAllLuoghi();
+		List <Mezzo> mezzi = DAO_mezzo.getAllMezzi();
+		List<Biglietto> biglietti = DAO_titolo.getAllBiglietti();
+		List<Abbonamento> abbonamenti = DAO_titolo.getAllAbbonamenti();
+		List<Luogo> luoghi = DAO_luogo.getAllLuoghi();
+		List<Tratta> tratte = DAO_tratta.getAllTratte();
+		
 		mezzi.get(0).validaBiglietto(biglietti.get(2));
 		mezzi.get(1).validaBiglietto(biglietti.get(3),LocalDate.of(2023, 4, 12));
 		mezzi.get(0).validaBiglietto(biglietti.get(1));
@@ -68,23 +70,27 @@ public class MainProject {
 //		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
 //		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 		
-		 Tratta t1 = new Tratta(luoghi.get(0),luoghi.get(1),73.5);
-		 Tratta t2 = new Tratta(luoghi.get(1),luoghi.get(0),80.5);
-		 
-		 t1.setTempoStimato(mezzi.get(0));
-		 
-		 t2.setTempoStimato(mezzi.get(0));
-		 
+		Tratta t1 = new Tratta(luoghi.get(0),luoghi.get(1),73.5);
+		Tratta t2 = new Tratta(luoghi.get(1),luoghi.get(0),80.5);
+		 		 
 		 
 		DAO_tratta.save(t1);
 		DAO_tratta.save(t2);
 		
+		tratte = DAO_tratta.getAllTratte();
+		
+		Mezzo m1 = mezzi.get(0);
+		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
+		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
+		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
+		
+		
+		DAO_mezzo.viaggiPercorsiSuTratta(m1.getId(), t2.getNumeroTratta());
 		
 		
 		
 		
-		
-		DAO_mezzo.update(mezzi.get(0));
+		//DAO_mezzo.update(mezzi.get(0));
 	
 		
 	

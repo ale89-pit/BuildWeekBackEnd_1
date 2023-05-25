@@ -191,13 +191,12 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 		        
 		        return resultList;
 		    } finally {
-		        em.close();
-		        
+		        em.close();  
 		    }
-		 
 		}
+		
 		@Override
-		public Map<Integer, Long> getTitoliVidimatiPeriodo(LocalDate data1,LocalDate data2) {
+		public Map<Integer, Long> getTitoliVidimatiPeriodo(LocalDate data1, LocalDate data2) {
 			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		    try {
 		        Query q = em.createNamedQuery("titolo_vidimato_date");
