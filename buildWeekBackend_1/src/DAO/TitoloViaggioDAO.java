@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import InterfaceDAO.ITitoloViaggioDAO;
 import model.Abbonamento;
 import model.Biglietto;
+import model.Mezzo;
 import model.TitoloViaggio;
 import model.Utente;
 import utils.JpaUtil;
@@ -168,6 +169,62 @@ public class TitoloViaggioDAO implements ITitoloViaggioDAO {
 			return null;
 		}
 		
-		
+		@Override
+		public List<Biglietto> getTitoliFromMezzo(Integer id){
+			 List<Biglietto> resultList = null ;
+		    EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		    try {
+		        Query q = em.createNamedQuery("titolo_vidimato_su");
+		        q.setParameter("id", id);
+		        
+		        resultList = q.getResultList();
+		        if(resultList.size() != 0) {
+		        	Mezzo mezzoUsato = resultList.get(0).getUtilizzatoSu();
+		        	System.out.println("Lista di biglietti usati sul: " +mezzoUsato.getTipoMezzo() +" (" +mezzoUsato.getId() +") ");
+		        	resultList.forEach(t -> System.out.println(" - Biglietto : " +t.getCodice() + " Emesso il : " + t.getDataEmissione() + "utilizzato il : "+ t.getDataVidimazione() ));
+		        	
+		        	
+		        }else {
+		        	System.out.println("Nessun Biglietto trovato");
+		        }
+		        
+		        
+		        return resultList;
+		    } finally {
+		        em.close();
+		        
+		    }
+//		    EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+//		    try {
+//		        Query q = em.createNamedQuery("titolo_emesso_date");
+//		        q.setParameter("data1", data1);
+//		        q.setParameter("data2", data2);
+//		        List<Object[]> resultList = q.getResultList();
+//		        
+//		        Map<Integer, Long> result = new HashMap<>();
+//		        
+//		        for (Object[] row : resultList) {
+//		            Integer biglietteriaId =(Integer) row[0];
+//		            Long numeroBiglietti = (Long) row[1];
+//		            result.put(biglietteriaId, numeroBiglietti);
+//		        }
+//		        
+//		        Long totaleBiglietti = 0L;
+//		        
+//		        System.out.println("Conteggio titoli emessi tra il " + data1 + " ed il " + data2);
+//		        for (Map.Entry<Integer, Long> entry : result.entrySet()) {
+//		            Integer biglietteriaId = entry.getKey();
+//		            Long numeroBiglietti = entry.getValue();
+//		            totaleBiglietti += numeroBiglietti;
+//		            System.out.println("ID Biglietteria: " + biglietteriaId + ", Numero titoli di viaggio: " + numeroBiglietti);
+//		        }
+//		        System.out.println("Totale: " + totaleBiglietti);
+//		        
+//		        return result;
+//		    } finally {
+//		        em.close();
+//		    }
+		 
+		}
 		
 }

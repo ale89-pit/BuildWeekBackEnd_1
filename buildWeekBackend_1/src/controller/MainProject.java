@@ -50,14 +50,20 @@ public class MainProject {
 		List<Abbonamento> abbonamenti=DAO_titolo.getAllAbbonamenti();
 	
 		mezzi.get(0).validaBiglietto(biglietti.get(2));
+		mezzi.get(1).validaBiglietto(biglietti.get(3),LocalDate.of(2023, 4, 12));
 		mezzi.get(0).validaBiglietto(biglietti.get(1));
+		mezzi.get(1).validaBiglietto(biglietti.get(5),LocalDate.of(2023, 1, 28));
 		mezzi.get(1).validaAbbonamento(abbonamenti.get(6));
 		
 		List <Mezzo> newmezzi=DAO_mezzo.getAllMezzi();
 		System.out.println(newmezzi.get(0));
-	//	List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
-	//	System.out.println(listExparire);
+		System.out.println(newmezzi.get(1));
+		Integer idMezzo = newmezzi.get(0).getId();
+		List <Biglietto> listbigliettiSu = DAO_titolo.getTitoliFromMezzo(1);
+//		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
 		
+		System.out.println(biglietti.get(0));
+		System.out.println(biglietti.get(1));
 		
 	}
 	

@@ -19,4 +19,5 @@ public interface ITitoloViaggioDAO {
 	public List<Biglietto>  getAllBiglietti();
 	public List<Abbonamento>  getAllAbbonamenti();
 	public Map<Integer,Long> getTitoliFromDate(LocalDate data1,LocalDate data2);
+	public List<Biglietto> getTitoliFromMezzo(Integer id);
 }

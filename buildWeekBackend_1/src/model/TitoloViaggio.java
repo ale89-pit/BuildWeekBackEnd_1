@@ -28,8 +28,9 @@ import utils.DurataAbb;
 @DiscriminatorColumn(name="tipo_biglietto", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQuery(name="titolo_emesso_date",query = "SELECT t.biglietteriaEmissione.id, COUNT(t) FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.biglietteriaEmissione.id")
-@NamedQuery(name="titolo_vidimato_su",query = "SELECT t.biglietteriaEmissione.id FROM TitoloViaggio t WHERE t.utilizzatoSu = :id")// Query 1 da testare (testato su PG ) Ci sono 3 z su mezzo!
-@NamedQuery(name="titolo_emesso_date",query = "SELECT t.biglietteriaEmissione.id FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.utilizzatoSu") //Ancora da testare
+@NamedQuery(name="titolo_vidimato_su",query = "SELECT t  FROM TitoloViaggio t WHERE t.utilizzatoSu.id = :id")
+@NamedQuery(name="titolo_vidimato_date",query = "SELECT t.biglietteriaEmissione.id FROM TitoloViaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2 GROUP BY t.utilizzatoSu") //Ancora da testare
+//SELECT * FROM titoli_viaggio WHERE data_vidimazione BETWEEN '2023/01/28' AND '2023/05/25'
 public abstract class TitoloViaggio {
 	
 	@Id
@@ -40,8 +41,7 @@ public abstract class TitoloViaggio {
 	@Column(name = "data_emissione", nullable = false)
 	private LocalDate dataEmissione;
 	
-	@Column(name = "data_scadenza")
-	private LocalDate dataScadenza=null;
+	
 	
 
 	
@@ -54,18 +54,18 @@ public abstract class TitoloViaggio {
 		super();
 	}
 	
-	public TitoloViaggio( Biglietteria luogoEmissione,LocalDate dataScadenza) {
+	public TitoloViaggio( Biglietteria luogoEmissione) {
 		super();
 		this.dataEmissione = LocalDate.now();
 		this.biglietteriaEmissione = luogoEmissione;
-		this.dataScadenza=dataScadenza;
+		
 	}
 
-	public TitoloViaggio(LocalDate dataEmissione, Biglietteria luogoEmissione,LocalDate dataScadenza) {
+	public TitoloViaggio(LocalDate dataEmissione, Biglietteria luogoEmissione) {
 		super();
 		this.dataEmissione = dataEmissione;
 		this.biglietteriaEmissione = luogoEmissione;
-		this.dataScadenza=dataScadenza;
+		
 	}
 
 	public Integer getCodice() {
@@ -80,9 +80,7 @@ public abstract class TitoloViaggio {
 		this.dataEmissione = dataEmissione;
 	}
 
-	public LocalDate getDataScadenza() {
-		return dataScadenza;
-	}
+	
 
 
 
@@ -99,8 +97,8 @@ public abstract class TitoloViaggio {
 
 	@Override
 	public String toString() {
-		return "TitoloViaggio [codice=" + codice + ", dataEmissione=" + dataEmissione + ", dataScadenza=" + dataScadenza
-				 + ", luogoEmissione=" + biglietteriaEmissione + "]";
+		return "TitoloViaggio [codice=" + codice + ", dataEmissione=" + dataEmissione + 
+				 ", luogoEmissione=" + biglietteriaEmissione + "]";
 	}
 	
 	

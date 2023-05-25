@@ -120,7 +120,31 @@ public class Mezzo {
 			TitoloViaggioDAO DAO_titolo =new TitoloViaggioDAO();
 			Biglietto biglietto=(Biglietto)DAO_titolo.getByCodice(b.getCodice());
 			
-			biglietto.setUtilizzato(mezzo);
+			biglietto.setUtilizzatoSu(mezzo);
+			System.out.println("Questo biglietto è stato vidimato");
+			DAO_titolo.update(biglietto);
+			DAO_mezzo.update(mezzo);
+		}else {
+			System.out.println("Questo biglietto è stato già utilizzato");
+		}
+		
+		
+	}else {
+		System.out.println("Biglietto non riconosciuto");
+	}
+		}
+	}
+	public void validaBiglietto(Biglietto b,LocalDate dataVid) {
+		if(this.id!=null) {
+	if(b.getCodice()!=null) {
+		if(!b.isVidimato()) {
+			MezzoDAO DAO_mezzo=new MezzoDAO();
+			Mezzo mezzo=DAO_mezzo.getById(this.id);
+			TitoloViaggioDAO DAO_titolo =new TitoloViaggioDAO();
+			Biglietto biglietto=(Biglietto)DAO_titolo.getByCodice(b.getCodice());
+			
+			biglietto.setUtilizzatoSu(mezzo,dataVid);
+//			
 			System.out.println("Questo biglietto è stato vidimato");
 			DAO_titolo.update(biglietto);
 			DAO_mezzo.update(mezzo);
@@ -168,7 +192,7 @@ public class Mezzo {
 	@Override
 	public String toString() {
 		return "Mezzo [id=" + id + ", capienza=" + capienza + ", stato=" + stato + ", tipoMezzo=" + tipoMezzo
-				+ ", inizioServizio=" + inizioServizio + ", fineServizio=" + fineServizio + ", vidimati=" + vidimati
+				+ ", inizioServizio=" + inizioServizio + ", fineServizio=" + fineServizio + ", vidimati=" + vidimati.size()
 				+ "]";
 	}
 	

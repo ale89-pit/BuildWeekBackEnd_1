@@ -16,10 +16,13 @@ import utils.DurataAbb;
 public class Biglietto extends TitoloViaggio {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="mezzzo_utilizzato")
+	@JoinColumn(name="mezzo_utilizzato")
 	private Mezzo utilizzatoSu;
 
 	boolean vidimato=false;
+	
+	@Column(name = "data_vidimazione")
+	private LocalDate dataVidimazione;
 	
 
 	public Biglietto() {
@@ -27,12 +30,12 @@ public class Biglietto extends TitoloViaggio {
 	
 	}
 	public Biglietto(Biglietteria luogoEmissione) {
-		super(LocalDate.now(),luogoEmissione,null);
+		super(LocalDate.now(),luogoEmissione);
 	}
 	
 	public Biglietto(LocalDate dataEmissione,
 			Biglietteria luogoEmissione) {
-		super(dataEmissione, luogoEmissione,null);
+		super(dataEmissione, luogoEmissione);
 	}
 
 	
@@ -44,11 +47,32 @@ public class Biglietto extends TitoloViaggio {
 		this.vidimato = vidimato;
 	}
 	
-	public Mezzo getUtilizzato() {
+	public Mezzo getUtilizzatoSu() {
 		return utilizzatoSu;
 	}
-	public void setUtilizzato(Mezzo utilizzatoSu) {
+	public void setUtilizzatoSu(Mezzo utilizzatoSu) {
 		this.utilizzatoSu = utilizzatoSu;
 		this.vidimato=true;
+		this.dataVidimazione = LocalDate.now();
 	}
+	public void setUtilizzatoSu(Mezzo utilizzatoSu,LocalDate dataVid) {
+		this.utilizzatoSu = utilizzatoSu;
+		this.vidimato=true;
+		this.dataVidimazione = dataVid;
+		if(dataVid.compareTo(this.getDataEmissione()) < 0) { 
+			this.setDataEmissione(dataVid);
+		}
+	}
+	public LocalDate getDataVidimazione() {
+		return dataVidimazione;
+	}
+	public void setDataVidimazione(LocalDate dataVidimazione) {
+		this.dataVidimazione = dataVidimazione;
+	}
+	@Override
+	public String toString() {
+		return "Biglietto ["+ super.toString()+ " utilizzato Su=" + utilizzatoSu + ", vidimato=" + vidimato + "]";
+	}
+	
+	
 }
