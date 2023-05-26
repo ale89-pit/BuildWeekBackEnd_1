@@ -81,6 +81,7 @@ public class LuogoDAO implements ILuogoDAO {
 		try {
 			Query q = em.createNamedQuery("getByIdLuogo");
 			q.setParameter("idLuogo", id);
+			System.out.println("Scegli la biglietteria");
 			return q.getResultList();
 		} finally {
 			em.close();

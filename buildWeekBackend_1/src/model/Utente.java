@@ -43,6 +43,7 @@ public class Utente {
 	@Column(nullable = false)
 	private LocalDate dataNascita;
 
+
 	@OneToMany(mappedBy = "titolare", fetch = FetchType.EAGER)
 	private List<Abbonamento> abbonamentiAcquistati = new ArrayList<Abbonamento>();
 
@@ -120,6 +121,10 @@ public class Utente {
 
 	public List<Abbonamento> getAbbonamentiAcquistati() {
 		return abbonamentiAcquistati;
+	}
+	public boolean isValido() {
+		boolean validita = (this.scadenzaTessera.compareTo(LocalDate.now()) > 0) ? true : false;
+		return validita;
 	}
 
 	@Override

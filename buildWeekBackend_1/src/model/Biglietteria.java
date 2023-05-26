@@ -75,7 +75,7 @@ public class Biglietteria {
 		return "Biglietteria [id=" + id + ", luogo=" + luogo + ", titoliEmessi=" + titoliEmessi.size() + "]";
 	}
 
-	public void emettiBiglietto(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO) {
+	public Biglietto emettiBiglietto(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO) {
 		if (this.id != null) {
 			Biglietteria biglietteriaEmissione = bigl_DAO.getById(this.id);
 			if (!(biglietteriaEmissione instanceof Rivenditore)) {
@@ -86,17 +86,20 @@ public class Biglietteria {
 				} else {
 					TitoloViaggio t = new Biglietto(biglietteriaEmissione);
 					titolo_DAO.save(t);
+					return  ((Biglietto)t);
 				}
 			} else {
 				TitoloViaggio t = new Biglietto(biglietteriaEmissione);
 				titolo_DAO.save(t);
+				return  ((Biglietto)t);
 			}
 		} else {
 			log.error("Nessuna Biglietteria trovata!!");
 		}
+		return  null;
 	}
 
-	public void emettiAbbonamento(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO, DurataAbb durata, Utente u) {
+	public Abbonamento emettiAbbonamento(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO, DurataAbb durata, Utente u) {
 		if (this.id != null) {
 			if (u.getTessera() != null) {
 
@@ -109,12 +112,14 @@ public class Biglietteria {
 					} else {
 						TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione, u);
 						titolo_DAO.save(t);
+						return ((Abbonamento)t);
 					}
 
 				} else {
 
 					TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione, u);
 					titolo_DAO.save(t);
+					return ((Abbonamento)t);
 				}
 			} else {
 				log.error("Utente non registrato!!");
@@ -123,6 +128,7 @@ public class Biglietteria {
 		} else {
 			log.error("Nessuna Biglietteria trovata!!");
 		}
+		return null;
 	}
 
 }
