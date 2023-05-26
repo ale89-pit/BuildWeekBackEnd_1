@@ -7,8 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQuery;
+
 @Entity
 @Table(name = "luoghi")
+@NamedQuery (name = "getByIdLuogo", query="SELECT b FROM Biglietteria b WHERE luogo.id = :idLuogo")
 public class Luogo {
 
 	@Id

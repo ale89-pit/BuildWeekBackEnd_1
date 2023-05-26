@@ -31,7 +31,7 @@ import utils.DurataAbb;
 public class Biglietteria {
 	private static Logger log = LoggerFactory.getLogger(Biglietteria.class);
 	@Id
-	@SequenceGenerator(name = "id_biglietteria", sequenceName = "id_biglietteria", allocationSize = 1, initialValue = 1000)
+	@SequenceGenerator(name = "id_biglietteria", sequenceName = "id_biglietteria", allocationSize = 1, initialValue = 3000)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_biglietteria")
 	private Integer id;
 

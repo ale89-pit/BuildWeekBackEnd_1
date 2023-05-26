@@ -15,4 +15,5 @@ public interface IBiglietteriaDAO {
 	public Biglietteria getById(Integer id);
 
 	public List<Biglietteria> getAllBiglietterie();
+	
 }

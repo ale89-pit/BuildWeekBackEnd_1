@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import InterfaceDAO.ILuogoDAO;
+import model.Biglietteria;
 import model.Luogo;
 import utils.JpaUtil;
 
@@ -73,5 +74,17 @@ public class LuogoDAO implements ILuogoDAO {
 			em.close();
 		}
 	}
-
+	
+	@Override
+	public List<Biglietteria>trovaBiglietteria (Integer id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			Query q = em.createNamedQuery("getByIdLuogo");
+			q.setParameter("idLuogo", id);
+			return q.getResultList();
+		} finally {
+			em.close();
+		}
+	}
+	
 }

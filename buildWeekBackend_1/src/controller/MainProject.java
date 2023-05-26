@@ -1,15 +1,13 @@
 package controller;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Scanner;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
 
 import DAO.BiglietteriaDAO;
 import DAO.LuogoDAO;
@@ -25,7 +23,6 @@ import model.Distributore;
 import model.Luogo;
 import model.Mezzo;
 import model.Rivenditore;
-import model.TitoloViaggio;
 import model.Tratta;
 import model.Utente;
 import model.Viaggio;
@@ -87,7 +84,7 @@ public class MainProject {
 				
 		DAO_mezzo.viaggiPercorsiSuTratta(m1.getId(), t2.getNumeroTratta());
 
-		
+		menuNavigazione(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo, DAO_mezzo, DAO_tratta);
 	}
 	
 	public static void riempiDB(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo,MezzoDAO DAO_mezzo, TrattaDAO DAO_tratta) {
@@ -215,5 +212,56 @@ public class MainProject {
 		
 	}
 	
-}
+	public static Scanner sc = new Scanner(System.in);
+	
+	public static void menuNavigazione (UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo,MezzoDAO DAO_mezzo, TrattaDAO DAO_tratta) {
+		System.out.println("Benvenuto nella biglietteria ATAC");
+		Integer stazione=0;
+		System.out.println("Sei in possesso della tessera? true/false");
+		boolean risp = sc.nextBoolean();
+		//sc.close();
+		if (risp) {
+			System.out.println("Inserisci il numero della tessera");
+			Integer tessera = sc.nextInt();
+			//sc.close();
+		    Utente u = DAO_utente.getByTessera(tessera);
+		    if (u!= null) {
+		    	
+		    	List<Abbonamento> lista = u.getAbbonamentiAcquistati();
+		    	lista.stream().filter(a->a.isValido()).collect(Collectors.toList()).forEach(a-> System.out.println("Abbonamento valido: n. "+ a.getCodice() + " data scadenza - " + a.getDataScadenza()));
+		    	stazione = lista.stream().filter(a->a.isValido()).collect(Collectors.toList()).get(0).getLuogoEmissione().getId();
+		    }
+		    else {
+		    	System.out.println("Utente non trovato!");
+		    }
+		}
+		else {
+			System.out.println("Per iniziare compra un biglietto!");
+			List<Luogo> luoghi = DAO_luogo.getAllLuoghi();
+			Luogo luogo = luoghi.get(0);
+			do {
+			System.out.println("Seleziona la stazione di partenza: ");
+			luoghi.forEach(l-> System.out.println(l.getId() + " - " + l.getNome()));
+			stazione = sc.nextInt();
+			//sc.close();
+			luogo= DAO_luogo.getById(stazione);
+			if (stazione<1 | stazione>luoghi.size()) {
+					System.out.println("Scelta non valida!");
+				}
+				else {
+					System.out.println("Stazione scelta: " + luogo.getNome() + " (" + luogo.getCitta()+ ")");
+				}
+			}
+			while (stazione<1 & stazione>luoghi.size());
+			System.out.println("Seleziona la biglietteria: ");
+			DAO_luogo.trovaBiglietteria(stazione).forEach(b-> System.out.println(b.getId() + " : " + b.getLuogo().getNome()));
+			Integer b = sc.nextInt();
+			DAO_biglietteria.getById(b).emettiBiglietto(DAO_titoloViaggio, DAO_biglietteria);
+			}
+		System.out.println(DAO_tratta.getById(stazione));
+		
+		}
+		
+	}
+
 

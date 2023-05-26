@@ -1,7 +1,8 @@
 package InterfaceDAO;
 
-import java.util.List; 
+import java.util.List;
 
+import model.Biglietteria;
 import model.Luogo;
 
 public interface ILuogoDAO {
@@ -13,4 +14,6 @@ public interface ILuogoDAO {
 	public Luogo getById(Integer id);
 
 	public List<Luogo> getAllLuoghi();
+	
+	public List<Biglietteria> trovaBiglietteria (Integer id);
 }
