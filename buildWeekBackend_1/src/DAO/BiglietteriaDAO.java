@@ -10,36 +10,33 @@ import org.slf4j.LoggerFactory;
 
 import InterfaceDAO.IBiglietteriaDAO;
 import model.Biglietteria;
-import model.Utente;
 import utils.JpaUtil;
 
 public class BiglietteriaDAO implements IBiglietteriaDAO {
-	private static Logger log=LoggerFactory.getLogger(BiglietteriaDAO.class);
+	private static Logger log = LoggerFactory.getLogger(BiglietteriaDAO.class);
+
 	@Override
 	public void save(Biglietteria bi) {
-		 EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
-			try {
-				
-				em.getTransaction().begin();
-				em.persist(bi);
-				em.getTransaction().commit();
-				log.info("Biglietteria salvata correttamente");
-			}catch(Exception ex) {
-				em.getTransaction().rollback();
-				log.error(ex.getMessage());
-			}finally{
-				em.close();
-			}
-		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(bi);
+			em.getTransaction().commit();
+			log.info("Biglietteria salvata correttamente");
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			log.error(ex.getMessage());
+		} finally {
+			em.close();
+		}
+
 	}
 
 	@Override
 	public Biglietteria getById(Integer id) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-//			em.getTransaction().begin();
-			Biglietteria u =  em.find(Biglietteria.class, id);
-//			em.getTransaction().commit();
+			Biglietteria u = em.find(Biglietteria.class, id);
 			return u;
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -49,10 +46,10 @@ public class BiglietteriaDAO implements IBiglietteriaDAO {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void update(Biglietteria b) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.merge(b);
@@ -64,12 +61,12 @@ public class BiglietteriaDAO implements IBiglietteriaDAO {
 		} finally {
 			em.close();
 		}
-		
+
 	}
 
 	@Override
 	public void delete(Biglietteria bi) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.remove(bi);
@@ -81,12 +78,12 @@ public class BiglietteriaDAO implements IBiglietteriaDAO {
 		} finally {
 			em.close();
 		}
-		
+
 	}
 
 	@Override
-	public List<Biglietteria> getAllUsers() {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+	public List<Biglietteria> getAllBiglietterie() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			Query q = em.createQuery("SELECT u FROM Biglietteria u");
 			return q.getResultList();

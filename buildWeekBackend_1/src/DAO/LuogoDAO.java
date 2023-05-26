@@ -13,45 +13,27 @@ import model.Luogo;
 import utils.JpaUtil;
 
 public class LuogoDAO implements ILuogoDAO {
-	private static Logger log=LoggerFactory.getLogger(LuogoDAO.class);
+	private static Logger log = LoggerFactory.getLogger(LuogoDAO.class);
+
 	@Override
 	public void save(Luogo bi) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			
 			em.getTransaction().begin();
 			em.persist(bi);
 			em.getTransaction().commit();
 			log.info("Luogo salvato correttamente");
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			em.getTransaction().rollback();
 			log.error(ex.getMessage());
-		}finally{
-			em.close();
-		}
-		
-	}
-
-	@Override
-	public Luogo getById(Integer id) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
-		try {
-//			em.getTransaction().begin();
-			Luogo u =  em.find(Luogo.class, id);
-//			em.getTransaction().commit();
-			return u;
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			log.error("Errore nel recupero del Luogo");
 		} finally {
 			em.close();
 		}
-		return null;
 	}
 
 	@Override
 	public void delete(Luogo bi) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.remove(bi);
@@ -59,18 +41,33 @@ public class LuogoDAO implements ILuogoDAO {
 			log.info("Luogo rimosso correttamente dal database");
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			log.error("Errore nella rimozione del Luogo");
+			log.error("Errore nella rimozione del luogo");
 		} finally {
 			em.close();
 		}
-		
+
+	}
+
+	@Override
+	public Luogo getById(Integer id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			Luogo u = em.find(Luogo.class, id);
+			return u;
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			log.error("Errore nel recupero del luogo");
+		} finally {
+			em.close();
+		}
+		return null;
 	}
 
 	@Override
 	public List<Luogo> getAllLuoghi() {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			Query q = em.createQuery("SELECT u FROM Luogo u");
+			Query q = em.createQuery("SELECT l FROM Luogo l");
 			return q.getResultList();
 		} finally {
 			em.close();

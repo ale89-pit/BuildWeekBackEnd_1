@@ -1,11 +1,8 @@
 package model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -15,9 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -27,7 +22,6 @@ import org.slf4j.LoggerFactory;
 
 import DAO.BiglietteriaDAO;
 import DAO.TitoloViaggioDAO;
-import DAO.UtenteDAO;
 import utils.DurataAbb;
 
 @Entity
@@ -81,18 +75,8 @@ public class Biglietteria {
 		return "Biglietteria [id=" + id + ", luogo=" + luogo + ", titoliEmessi=" + titoliEmessi.size() + "]";
 	}
 
-	public TitoloViaggio getUltimoTitolo() {
-
-		TitoloViaggio ultimoTitolo = new TitoloViaggioDAO().getAllTitoli()
-				.get(new TitoloViaggioDAO().getAllTitoli().size() - 1);
-
-		return ultimoTitolo;
-	}
-
 	public void emettiBiglietto(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO) {
-
 		if (this.id != null) {
-
 			Biglietteria biglietteriaEmissione = bigl_DAO.getById(this.id);
 			if (!(biglietteriaEmissione instanceof Rivenditore)) {
 
@@ -103,40 +87,36 @@ public class Biglietteria {
 					TitoloViaggio t = new Biglietto(biglietteriaEmissione);
 					titolo_DAO.save(t);
 				}
-
 			} else {
-
 				TitoloViaggio t = new Biglietto(biglietteriaEmissione);
 				titolo_DAO.save(t);
 			}
-
 		} else {
 			log.error("Nessuna Biglietteria trovata!!");
 		}
-
 	}
 
-	public void emettiAbbonamento(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO, DurataAbb durata, Utente u ) {
+	public void emettiAbbonamento(TitoloViaggioDAO titolo_DAO, BiglietteriaDAO bigl_DAO, DurataAbb durata, Utente u) {
 		if (this.id != null) {
-			if(u.getTessera() != null ) {
-				
+			if (u.getTessera() != null) {
+
 				Biglietteria biglietteriaEmissione = bigl_DAO.getById(this.id);
 				if (!(biglietteriaEmissione instanceof Rivenditore)) {
-					
+
 					if (biglietteriaEmissione instanceof Distributore
 							& !((Distributore) biglietteriaEmissione).isInServizio()) {
 						log.error("Distributore fuori servizio!!");
 					} else {
-						TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione,u);
+						TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione, u);
 						titolo_DAO.save(t);
 					}
-					
+
 				} else {
-					
-					TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione,u);
+
+					TitoloViaggio t = new Abbonamento(durata, biglietteriaEmissione, u);
 					titolo_DAO.save(t);
 				}
-			}else {
+			} else {
 				log.error("Utente non registrato!!");
 			}
 

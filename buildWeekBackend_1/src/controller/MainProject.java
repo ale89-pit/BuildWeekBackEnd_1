@@ -17,6 +17,7 @@ import DAO.MezzoDAO;
 import DAO.TitoloViaggioDAO;
 import DAO.TrattaDAO;
 import DAO.UtenteDAO;
+import DAO.ViaggioDAO;
 import model.Abbonamento;
 import model.Biglietteria;
 import model.Biglietto;
@@ -27,6 +28,7 @@ import model.Rivenditore;
 import model.TitoloViaggio;
 import model.Tratta;
 import model.Utente;
+import model.Viaggio;
 import utils.DurataAbb;
 import utils.JpaUtil;
 import utils.TipoMezzo;
@@ -44,17 +46,19 @@ public class MainProject {
 		LuogoDAO DAO_luogo = new LuogoDAO();
 		MezzoDAO DAO_mezzo=new MezzoDAO();
 		TrattaDAO DAO_tratta = new TrattaDAO();	
+		ViaggioDAO DAO_viaggio = new ViaggioDAO();	
 		
 
-		riempiDB(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo,DAO_mezzo);
+		riempiDB(DAO_utente, DAO_titolo, DAO_biglietteria, DAO_luogo, DAO_mezzo, DAO_tratta);
 		
-		Map<Integer,Long> ricercaTitoliData = DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
+		DAO_titolo.getTitoliFromDate(LocalDate.of(2023,5,23),LocalDate.of(2023,5,25));
 
 		List <Mezzo> mezzi = DAO_mezzo.getAllMezzi();
 		List<Biglietto> biglietti = DAO_titolo.getAllBiglietti();
 		List<Abbonamento> abbonamenti = DAO_titolo.getAllAbbonamenti();
 		List<Luogo> luoghi = DAO_luogo.getAllLuoghi();
 		List<Tratta> tratte = DAO_tratta.getAllTratte();
+		List<Viaggio> viaggi = DAO_viaggio.getAllViaggi();
 		
 		mezzi.get(0).validaBiglietto(biglietti.get(2));
 		mezzi.get(1).validaBiglietto(biglietti.get(3),LocalDate.of(2023, 4, 12));
@@ -62,13 +66,11 @@ public class MainProject {
 		mezzi.get(1).validaBiglietto(biglietti.get(5),LocalDate.of(2023, 1, 28));
 		mezzi.get(1).validaAbbonamento(abbonamenti.get(6));
 		
-//		List <Mezzo> newmezzi=DAO_mezzo.getAllMezzi();
-//		System.out.println(newmezzi.get(0));
-//		System.out.println(newmezzi.get(1));
-//		Integer idMezzo = newmezzi.get(0).getId();
-//		List <Biglietto> listbigliettiSu = DAO_titolo.getTitoliFromMezzo(1);
-//		Map<Integer,Long> ricercaTitoliVidimatiData = DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
-//		List<Utente> listExparire=DAO_utente.getAllUsersExpaire();
+		mezzi = DAO_mezzo.getAllMezzi();
+
+		DAO_titolo.getTitoliFromMezzo(1);
+		DAO_titolo.getTitoliVidimatiPeriodo(LocalDate.of(2023,1,1), LocalDate.now());
+		DAO_utente.getTessereScadute();
 		
 		Tratta t1 = new Tratta(luoghi.get(0),luoghi.get(1),73.5);
 		Tratta t2 = new Tratta(luoghi.get(1),luoghi.get(0),80.5);
@@ -77,48 +79,31 @@ public class MainProject {
 		DAO_tratta.save(t1);
 		DAO_tratta.save(t2);
 		
-		tratte = DAO_tratta.getAllTratte();
-		
 		Mezzo m1 = mezzi.get(0);
-		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
-		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
-		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
 		
-		
+		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
+		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato()));
+		m1.percorriTratta(t2, LocalTime.now(), LocalTime.now().plusMinutes(t2.getTempoStimato())); 
+				
 		DAO_mezzo.viaggiPercorsiSuTratta(m1.getId(), t2.getNumeroTratta());
-		
-		
-		
-		
-		//DAO_mezzo.update(mezzi.get(0));
-	
-		
-	
-		//System.out.println(DAO_tratta.getById(mezzi.get(0).getId()).getTempoStimato());
-		
 
 		
 	}
 	
-	public static void riempiDB(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo,MezzoDAO DAO_mezzo) {
-	
+	public static void riempiDB(UtenteDAO DAO_utente,TitoloViaggioDAO DAO_titoloViaggio,BiglietteriaDAO DAO_biglietteria,LuogoDAO DAO_luogo,MezzoDAO DAO_mezzo, TrattaDAO DAO_tratta) {
+		
+		List<Luogo> luoghi = new ArrayList<>();
 
-		
-		
-		
-			List<Luogo> luoghi = new ArrayList<>();
+		luoghi.add(new Luogo("TO", "Torino", "Torino Porta Nuova"));
+		luoghi.add(new Luogo("MI", "Milano", "Milano Centrale"));
+		luoghi.add(new Luogo("RM", "Roma", "Roma Termini"));
+		luoghi.add(new Luogo("NA", "Napoli", "Napoli Centrale"));
+		luoghi.add(new Luogo("FI", "Firenze", "Firenze Santa Maria Novella"));
 
-			luoghi.add(new Luogo("TO", "Torino", "Torino Porta Nuova"));
-			luoghi.add(new Luogo("MI", "Milano", "Milano Centrale"));
-			luoghi.add(new Luogo("RM", "Roma", "Roma Termini"));
-			luoghi.add(new Luogo("NA", "Napoli", "Napoli Centrale"));
-			luoghi.add(new Luogo("FI", "Firenze", "Firenze Santa Maria Novella"));
-
-			for (Luogo luogo : luoghi) {
-				DAO_luogo.save(luogo);
-			}
-			
-		
+		for (Luogo luogo : luoghi) {
+			DAO_luogo.save(luogo);
+		}
+					
 		
 		List<Utente> utenti = new ArrayList<>();
 	    utenti.add(new Utente( "Emanuele", "Rossi", LocalDate.of(1997, 1, 27)));
@@ -134,6 +119,7 @@ public class MainProject {
         for (Utente utente : utenti) {
         	DAO_utente.save(utente);
         }
+        
         
         List<Biglietteria> biglietterie = new ArrayList<>();
 
@@ -173,6 +159,7 @@ public class MainProject {
         	biglietterie.add(distributore);
         }
         
+        
         List<Biglietto> biglietti = new ArrayList<>();
 
         biglietti.add(new Biglietto(LocalDate.of(2023, 5, 1), biglietterie.get(0)));
@@ -192,6 +179,7 @@ public class MainProject {
         	DAO_titoloViaggio.save(biglietto);
         }
      
+        
         List<Abbonamento> abbonamenti = new ArrayList<>();
 
         abbonamenti.add(new Abbonamento(LocalDate.of(2023, 5, 1), DurataAbb.SETTIMANALE, biglietterie.get(0), utenti.get(0)));
@@ -213,6 +201,7 @@ public class MainProject {
         	DAO_titoloViaggio.save(abbonamento);
         }
     
+        
         List<Mezzo> mezzi= new ArrayList<>();
         
         mezzi.add(new Mezzo(TipoMezzo.AUTOBUS,LocalDate.of(2023, 2, 10)));
@@ -223,12 +212,8 @@ public class MainProject {
         for (Mezzo mezzo : mezzi) {
         	DAO_mezzo.save(mezzo);
         }
-        
-        
-        
-        
+		
 	}
-	
 	
 }
 

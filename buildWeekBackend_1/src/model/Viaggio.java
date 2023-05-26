@@ -1,6 +1,5 @@
 package model;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
@@ -13,32 +12,29 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import utils.TipoMezzo;
-
 @Entity
-@Table(name="viaggi")
+@Table(name = "viaggi")
 public class Viaggio {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Mezzo mezzo;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Tratta tratta;
-	
-	@Column(name="orario_partenza")
+
+	@Column(name = "orario_partenza")
 	private LocalTime orarioPartenza;
-	
-	@Column(name="orario_arrivo")
+
+	@Column(name = "orario_arrivo")
 	private LocalTime orarioArrivo;
-	
-	@Column(name="tempo_effettivo_min")
+
+	@Column(name = "tempo_effettivo_min")
 	private Long tempoEffettivo;
-	
-	
+
 	public Viaggio() {
 		super();
 	}
@@ -52,7 +48,18 @@ public class Viaggio {
 		this.tempoEffettivo = orarioPartenza.until(orarioArrivo, ChronoUnit.MINUTES);
 	}
 
-	
+	public Integer getId() {
+		return id;
+	}
+
+	public Mezzo getMezzo() {
+		return mezzo;
+	}
+
+	public Tratta getTratta() {
+		return tratta;
+	}
+
 	public LocalTime getOrarioPartenza() {
 		return orarioPartenza;
 	}
@@ -64,14 +71,14 @@ public class Viaggio {
 	public Long getTempoEffettivo() {
 		return tempoEffettivo;
 	}
+	
+	public LocalTime getOrarioArrivo() {
+		return orarioArrivo;
+	}
 
 	public void setOrarioArrivo(LocalTime orarioArrivo) {
 		this.orarioArrivo = orarioArrivo;
 		this.tempoEffettivo = (long) orarioArrivo.compareTo(orarioPartenza);
-	}
-
-	public LocalTime getOrarioArrivo() {
-		return orarioArrivo;
 	}
 
 	@Override
@@ -80,6 +87,4 @@ public class Viaggio {
 				+ ", tempoEffettivo=" + tempoEffettivo + "]";
 	}
 
-	
-	
 }

@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,8 +7,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("distributori")
 public class Distributore extends Biglietteria {
-	
-	
+
 	@Column
 	private boolean inServizio;
 
@@ -18,7 +15,7 @@ public class Distributore extends Biglietteria {
 		super();
 		this.inServizio = true;
 	}
-	
+
 	public Distributore(Luogo luogo) {
 		super(luogo);
 		this.inServizio = true;
@@ -41,6 +38,5 @@ public class Distributore extends Biglietteria {
 	public String toString() {
 		return "Distributore [ " + super.toString() + "inServizio=" + inServizio + "]";
 	}
-	
-	
+
 }

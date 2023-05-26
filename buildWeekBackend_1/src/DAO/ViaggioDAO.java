@@ -13,44 +13,27 @@ import model.Viaggio;
 import utils.JpaUtil;
 
 public class ViaggioDAO implements IViaggioDAO {
-	private static Logger log=LoggerFactory.getLogger(TrattaDAO.class);
-	@Override
-	public void save(Viaggio v) {
-		 EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
-			try {
-				
-				em.getTransaction().begin();
-				em.persist(v);
-				em.getTransaction().commit();
-				log.info("Viaggio salvato correttamente");
-			}catch(Exception ex) {
-				em.getTransaction().rollback();
-				log.error(ex.getMessage());
-			}finally{
-				em.close();
-			}
-	}
+	private static Logger log = LoggerFactory.getLogger(TrattaDAO.class);
 
 	@Override
-	public Viaggio getById(Integer id) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+	public void save(Viaggio v) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-//			em.getTransaction().begin();
-			Viaggio v =  em.find(Viaggio.class, id);
-//			em.getTransaction().commit();
-			return v;
-		} catch (Exception e) {
+			em.getTransaction().begin();
+			em.persist(v);
+			em.getTransaction().commit();
+			log.info("Viaggio salvato correttamente");
+		} catch (Exception ex) {
 			em.getTransaction().rollback();
-			log.error("Errore nel recupero del Viaggio");
+			log.error(ex.getMessage());
 		} finally {
 			em.close();
 		}
-		return null;
 	}
 
 	@Override
 	public void update(Viaggio v) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.merge(v);
@@ -62,11 +45,11 @@ public class ViaggioDAO implements IViaggioDAO {
 		} finally {
 			em.close();
 		}
-		
+
 	}
 
 	public void delete(Viaggio v) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.remove(v);
@@ -79,9 +62,25 @@ public class ViaggioDAO implements IViaggioDAO {
 			em.close();
 		}
 	}
+
+	@Override
+	public Viaggio getById(Integer id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			Viaggio v = em.find(Viaggio.class, id);
+			return v;
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			log.error("Errore nel recupero del Viaggio");
+		} finally {
+			em.close();
+		}
+		return null;
+	}
+
 	@Override
 	public List<Viaggio> getAllViaggi() {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			Query q = em.createQuery("SELECT v FROM Viaggio v");
 			return q.getResultList();
@@ -91,4 +90,3 @@ public class ViaggioDAO implements IViaggioDAO {
 	}
 
 }
-

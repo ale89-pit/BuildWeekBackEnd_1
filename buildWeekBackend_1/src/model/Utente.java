@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDate; 
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,57 +17,60 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "utenti")
-@NamedQuery(name="check_tessera", query = "SELECT u FROM Utente u WHERE u.scadenzaTessera < NOW()")
+@NamedQuery(name = "check_tessera", query = "SELECT u FROM Utente u WHERE u.scadenzaTessera < NOW()")
 public class Utente {
-	
+
 	@Id
 	@SequenceGenerator(name = "numero_tessera", sequenceName = "numero_tessera", allocationSize = 1, initialValue = 5000)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "numero_tessera")
 	private Integer tessera;
-	
+
 	@Column(name = "emissione_tessera", nullable = false)
 	private LocalDate emissioneTessera;
-	
+
 	@Column(name = "rinnovo_tessera")
 	private LocalDate rinnovoTessera = null;
-	
+
 	@Column(name = "scadenza_tessera", nullable = false)
 	private LocalDate scadenzaTessera;
-	
+
 	@Column(nullable = false)
 	private String nome;
-	
+
 	@Column(nullable = false)
 	private String cognome;
-	
+
 	@Column(nullable = false)
 	private LocalDate dataNascita;
-	
+
 	@OneToMany(mappedBy = "titolare", fetch = FetchType.EAGER)
-	private List<Abbonamento> abbonamentiAcquistati  = new ArrayList<Abbonamento>();
+	private List<Abbonamento> abbonamentiAcquistati = new ArrayList<Abbonamento>();
 
 	public Utente() {
 		super();
 	}
 
-	public Utente(String nome,
-			String cognome, LocalDate dataNascita) {
+	public Utente(String nome, String cognome, LocalDate dataNascita) {
 		super();
 		this.emissioneTessera = LocalDate.now();
-		this.scadenzaTessera = rinnovoTessera != null ? this.rinnovoTessera.plusYears(1) : this.emissioneTessera.plusYears(1);
+		this.scadenzaTessera = rinnovoTessera != null ? this.rinnovoTessera.plusYears(1)
+				: this.emissioneTessera.plusYears(1);
 		this.nome = nome;
 		this.cognome = cognome;
 		this.dataNascita = dataNascita;
 	}
-	
-	public Utente(LocalDate emissioneTessera, String nome,
-			String cognome, LocalDate dataNascita) {
+
+	public Utente(LocalDate emissioneTessera, String nome, String cognome, LocalDate dataNascita) {
 		super();
 		this.emissioneTessera = emissioneTessera;
 		this.scadenzaTessera = this.emissioneTessera.plusYears(1);
 		this.nome = nome;
 		this.cognome = cognome;
 		this.dataNascita = dataNascita;
+	}
+
+	public Integer getTessera() {
+		return tessera;
 	}
 
 	public LocalDate getEmissioneTessera() {
@@ -84,7 +87,7 @@ public class Utente {
 
 	public void setRinnovoTessera(LocalDate rinnovoTessera) {
 		this.rinnovoTessera = rinnovoTessera;
-		this.scadenzaTessera= rinnovoTessera.plusYears(1);
+		this.scadenzaTessera = rinnovoTessera.plusYears(1);
 	}
 
 	public LocalDate getScadenzaTessera() {
@@ -119,14 +122,6 @@ public class Utente {
 		return abbonamentiAcquistati;
 	}
 
-	public void setAbbonamentiAcquistati(List<Abbonamento> abbonamentiAcquistati) {
-		this.abbonamentiAcquistati = abbonamentiAcquistati;
-	}
-
-	public Integer getTessera() {
-		return tessera;
-	}
-
 	@Override
 	public String toString() {
 		return "Utente [tessera=" + tessera + ", emissioneTessera=" + emissioneTessera + ", rinnovoTessera="
@@ -134,5 +129,4 @@ public class Utente {
 				+ ", dataNascita=" + dataNascita + ", titoliAcquistati=" + abbonamentiAcquistati.size() + "]";
 	}
 
-	
 }

@@ -15,18 +15,16 @@ import utils.DurataAbb;
 @Entity
 @DiscriminatorValue("abbonamenti")
 public class Abbonamento extends TitoloViaggio {
-	
-	
-	
+
 	@Enumerated(EnumType.STRING)
 	private DurataAbb durata;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Utente titolare;
 
 	@Column(name = "data_scadenza")
-	private LocalDate dataScadenza=null;
-	
+	private LocalDate dataScadenza = null;
+
 	public Abbonamento() {
 		super();
 	}
@@ -35,22 +33,21 @@ public class Abbonamento extends TitoloViaggio {
 		super();
 		this.titolare = titolare;
 	}
-	
+
 	public Abbonamento(DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
 		super(luogoEmissione);
 		this.titolare = titolare;
 		this.durata = durata;
-		this.dataScadenza=  durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7) 
-                : LocalDate.now().plusMonths(1);
-		
+		this.dataScadenza = durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7)
+				: LocalDate.now().plusMonths(1);
 	}
 
-	public Abbonamento(LocalDate dataEmissione,DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
+	public Abbonamento(LocalDate dataEmissione, DurataAbb durata, Biglietteria luogoEmissione, Utente titolare) {
 		super(dataEmissione, luogoEmissione);
 		this.titolare = titolare;
-		this.durata=durata;
-		this.dataScadenza=  durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7) 
-                : LocalDate.now().plusMonths(1);
+		this.durata = durata;
+		this.dataScadenza = durata.equals(DurataAbb.SETTIMANALE) ? LocalDate.now().plusDays(7)
+				: LocalDate.now().plusMonths(1);
 	}
 
 	public Utente getTitolare() {
@@ -60,15 +57,16 @@ public class Abbonamento extends TitoloViaggio {
 	public void setTitolare(Utente titolare) {
 		this.titolare = titolare;
 	}
+
 	public LocalDate getDataScadenza() {
 		return dataScadenza;
 	}
 
 	@Override
 	public String toString() {
-		return "Abbonamento [ "+ super.toString() + "titolare=" + titolare + ", dataScadenza=" + dataScadenza +"]";
+		return "Abbonamento [ " + super.toString() + "titolare=" + titolare + ", dataScadenza=" + dataScadenza + "]";
 	}
-	
+
 	public boolean isValido() {
 		boolean validita = (this.dataScadenza.compareTo(LocalDate.now()) > 0) ? true : false;
 		return validita;

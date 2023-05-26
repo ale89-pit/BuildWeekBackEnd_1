@@ -1,34 +1,29 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="luoghi")
+@Table(name = "luoghi")
 public class Luogo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String provincia;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String citta;
-	
-	@Column(nullable=false, unique = true)
+
+	@Column(nullable = false, unique = true)
 	private String nome;
-	
+
 	public Luogo() {
 		super();
 	}
@@ -38,6 +33,10 @@ public class Luogo {
 		this.provincia = provincia;
 		this.citta = citta;
 		this.nome = nome;
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
 	public String getProvincia() {
@@ -64,16 +63,9 @@ public class Luogo {
 		this.nome = nome;
 	}
 
-	
-
-	public Integer getId() {
-		return id;
-	}
-
 	@Override
 	public String toString() {
 		return "Luogo [id=" + id + ", provincia=" + provincia + ", citta=" + citta + ", nome=" + nome + "]";
 	}
-	
-	
+
 }

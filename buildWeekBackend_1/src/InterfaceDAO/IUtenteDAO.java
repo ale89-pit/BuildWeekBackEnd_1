@@ -6,10 +6,15 @@ import model.Utente;
 
 public interface IUtenteDAO {
 
-		public void save(Utente u);
-		public Utente getByN_tessera(Integer n_tessera);
-		public void delete(Utente u);
-		public void update(Utente u);
-		public List<Utente>  getAllUsers();
-		public List<Utente> getAllUsersExpaire();
+	public void save(Utente u);
+
+	public void update(Utente u);
+
+	public void delete(Utente u);
+
+	public Utente getByTessera(Integer tessera);
+
+	public List<Utente> getAllUsers();
+
+	public List<Utente> getTessereScadute();
 }

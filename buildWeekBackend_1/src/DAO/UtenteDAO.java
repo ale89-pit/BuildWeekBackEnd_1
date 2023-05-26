@@ -1,6 +1,5 @@
 package DAO;
 
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,33 +12,29 @@ import model.Utente;
 import utils.JpaUtil;
 
 public class UtenteDAO implements IUtenteDAO {
- private static Logger log=LoggerFactory.getLogger(UtenteDAO.class);
-// private static EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+	private static Logger log = LoggerFactory.getLogger(UtenteDAO.class);
+
 	@Override
 	public void save(Utente u) {
-		 EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			
 			em.getTransaction().begin();
 			em.persist(u);
 			em.getTransaction().commit();
-			log.info("utente: " + u.getNome() +" "+ u.getCognome() + " aggiunto al database");
-		}catch(Exception ex) {
+			log.info("utente: " + u.getNome() + " " + u.getCognome() + " aggiunto al database");
+		} catch (Exception ex) {
 			em.getTransaction().rollback();
 			log.error(ex.getMessage());
-		}finally{
+		} finally {
 			em.close();
 		}
-		
 	}
 
 	@Override
-	public Utente getByN_tessera(Integer n_tessera) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+	public Utente getByTessera(Integer tessera) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-//			em.getTransaction().begin();
-			Utente u =  em.find(Utente.class, n_tessera);
-//			em.getTransaction().commit();
+			Utente u = em.find(Utente.class, tessera);
 			return u;
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -52,7 +47,7 @@ public class UtenteDAO implements IUtenteDAO {
 
 	@Override
 	public void delete(Utente u) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.remove(u);
@@ -64,12 +59,11 @@ public class UtenteDAO implements IUtenteDAO {
 		} finally {
 			em.close();
 		}
-		
 	}
 
 	@Override
 	public void update(Utente u) {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.merge(u);
@@ -81,12 +75,11 @@ public class UtenteDAO implements IUtenteDAO {
 		} finally {
 			em.close();
 		}
-		
 	}
 
 	@Override
 	public List<Utente> getAllUsers() {
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			Query q = em.createQuery("SELECT u FROM Utente u");
 			return q.getResultList();
@@ -96,12 +89,9 @@ public class UtenteDAO implements IUtenteDAO {
 	}
 
 	@Override
-	public List<Utente> getAllUsersExpaire() {
-	
-		EntityManager em=JpaUtil.getEntityManagerFactory().createEntityManager();
-		
-		Query q=em.createNamedQuery("check_tessera");
-		
+	public List<Utente> getTessereScadute() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("check_tessera");
 		return q.getResultList();
 	}
 
